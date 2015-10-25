@@ -1,58 +1,26 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-<head>
-	<title>pixi.js example 1</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-		}
-	</style>
-	<script src="pixi.js"></script>
-
-</head>
-<body>
-	<script>
-	
-	// create an new instance of a pixi stage
-	var stage = new PIXI.Stage(0x66FF99);
-	
-	// create a renderer instance
-	var renderer = PIXI.autoDetectRenderer(400, 300);
-	
-	// add the renderer view element to the DOM
-	document.body.appendChild(renderer.view);
-	
-	requestAnimFrame( animate );
-	
-	// create a texture from an image path
-	var texture = PIXI.Texture.fromImage("bunny.png");
-	// create a new Sprite using the texture
-	var bunny = new PIXI.Sprite(texture);
-	
-	// center the sprites anchor point
-	bunny.anchor.x = 0.5;
-	bunny.anchor.y = 0.5;
-	
-	// move the sprite t the center of the screen
-	bunny.position.x = 200;
-	bunny.position.y = 150;
-	
-	stage.addChild(bunny);
-	
-	function animate() {
-	
-	    requestAnimFrame( animate );
-	
-	    // just for fun, lets rotate mr rabbit a little
-	    bunny.rotation += 0.1;
-		
-	    // render the stage   
-	    renderer.render(stage);
-	}
-
-	</script>
-
-	</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="viewport" content="user-scalable=no">
+        <link rel="icon" href="icon/icon.png" type="image/png">
+        <link rel="apple-touch-icon" href="icon/icon.png">
+        <link rel="stylesheet" type="text/css" href="fonts/gamefont.css">
+        <title>Project1</title>
+    </head>
+    <body style="background-color: black">
+        <script type="text/javascript" src="js/libs/pixi.js"></script>
+        <script type="text/javascript" src="js/libs/fpsmeter.js"></script>
+        <script type="text/javascript" src="js/libs/lz-string.js"></script>
+        <script type="text/javascript" src="js/rpg_core.js"></script>
+        <script type="text/javascript" src="js/rpg_managers.js"></script>
+        <script type="text/javascript" src="js/rpg_objects.js"></script>
+        <script type="text/javascript" src="js/rpg_scenes.js"></script>
+        <script type="text/javascript" src="js/rpg_sprites.js"></script>
+        <script type="text/javascript" src="js/rpg_windows.js"></script>
+        <script type="text/javascript" src="js/plugins.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+    </body>
 </html>
