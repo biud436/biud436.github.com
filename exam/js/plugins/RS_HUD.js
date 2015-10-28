@@ -1,6 +1,8 @@
 /*:
- * @plugindesc RS_HUD
- * @author biud436
+ * RS_HUD.js
+ * @date 2015.10.29
+ * @plugindesc 체력, 마력, 경험치를 표시하는 플러그인입니다.
+ * @author 러닝은빛(biud436)
  *
  * @param 가로
  * @desc 가로 크기
@@ -11,58 +13,39 @@
  * @default 101
  * 
  * @param 간격
- * @desc 간격
+ * @desc 화면 경계선과의 간격을 지정합니다.
  * @default 0
  * 
  * @param 가장자리옵션
  * @desc 페이스칩의 가장자리를 다듬어 부드럽게 묘화합니다.
  * @default true
  *
+ * @help 이 플러그인은 플러그인 커맨드가 없습니다.
  */
 
-function HUD() { 
+function HUD() {   
   this.initialize.apply(this, arguments); 
-};
+}
 
-var RS = RS || {};
-RS.Text = RS.Text || function() { this.initialize.apply(this, arguments); };
-
-(function() {
-
-  RS.Text.prototype = new Sprite();
-  
-  RS.Text.prototype.drawParam = function(strFunc) {
-    this._strFunc = strFunc;
-    this._text = strFunc();
-    this.bitmap.drawText(strFunc(), this._x, this._y, this._width, this._height, "center");
-  };
-  
-  RS.Text.prototype.update = function() {
-    Sprite.prototype.update.call(this);
-    if(this._strFunc() === this._text) {
-      return false;
-    } else {
-      this.bitmap.clear();
-       this.bitmap.drawText(this._text, this._x, this._y, this._width, this._height, "center");
-    }
-  };
-
-})();
- 
+/**
+ * @class HUD
+ * @extends PIXI.Stage
+ */ 
 (function() {
 
   var parameters = PluginManager.parameters('RS_HUD');
   var width = Number(parameters['가로'] || 317 );
   var height = Number(parameters['세로'] || 101 );
   var pd = Number(parameters['간격'] || 0);
+  var smooth = Boolean(parameters['가장자리옵션'] ==="true");
   var angle = Math.PI / 180.0;
-  var smooth = (parameters['가장자리옵션'] == "true")? true : false;
- 
+  
   HUD.prototype = new PIXI.Stage();
 
   HUD.prototype.initialize = function() {
       Stage.prototype.initialize.call(this);
       this.createHud();
+      this.createFace();
       this.createHp();
       this.createMp();
       this.createExp();
@@ -70,75 +53,81 @@ RS.Text = RS.Text || function() { this.initialize.apply(this, arguments); };
       this.setPosition();
   };
   
-  // 틀 생성
   HUD.prototype.createHud = function() {      
     this._hud = new Sprite(ImageManager.loadPicture('hud_window_empty'));
     this.addChild(this._hud);
     this._hud.x = pd;
-    this._hud.y = Graphics.boxHeight - height - pd;         
-    var player = $gameParty.members()[0];
-    this._face = this.circleClippingMask(0,0,45,2,player.faceName(),player.faceIndex(), 360);
+    this._hud.y = Graphics.boxHeight - height - pd;
   };
   
-  // 원형 클리핑 마스크
-  HUD.prototype.circleClippingMask = function(x, y, r, zoom, faceName, faceIndex, angle) {
+  HUD.prototype.createFace = function() {
+    var player = $gameParty.members()[0];
+    this._face = this.circleClippingMask(player.faceName(), player.faceIndex());
+    this.addChild(this._face);  
+  };
   
-    var myMask = new PIXI.Graphics();
-    var sprite = new Sprite();
-    var __bitmap = ImageManager.loadFace(faceName);
-    var sx = (faceIndex % 4) * 96 + 48;
-    var sy = (faceIndex / 4) * 96 + 48;    
-    
-    // /*** Mask */  
-    myMask.beginFill();
-    myMask.drawEllipse(this._hud.x, this._hud.y, r, r);
-    myMask.endFill();  
-    myMask.x = myMask.x + myMask.width / 2;
-    myMask.y = myMask.y + myMask.height / 2;
-    this.addChild(myMask);
-    
-    /*** Face Sprite */  
-    this.addChild(sprite); 
-    sprite.x = this._hud.x;
-    sprite.y = this._hud.y;
-    
-    /*** Add Face Bitmap */
-    sprite.bitmap = new Bitmap(96,96);
-    sprite.bitmap.blt(__bitmap, sx, sy, 96, 96, this._hud.x, this._hud.y );
-    __bitmap = null;
-    
-    // /*** Add Mask */
-    sprite._mask = myMask;    
-    return sprite
+  Bitmap.prototype.drawClippingImage = function(bitmap, maskImage , _x, _y, _sx, _sy) {
+    var context = this._context;
+    context.save();
+    context.drawImage(maskImage._canvas, _x, _y, 96, 96);
+    // 새 도형을그릴 때, 기존 도형과 겹치는 부분만 그립니다.
+    context.globalCompositeOperation = 'source-atop';
+    context.drawImage(bitmap._canvas, _sx, _sy, 144, 144, 0, 0, 96, 96);
+    context.restore();
+    this._setDirty();
   };  
   
-  // HP 생성
+  HUD.prototype.circleClippingMask = function(faceName, faceIndex) {
+  
+    /*** 변수 */
+    var sprite = new Sprite()
+        , __bitmap = ImageManager.loadFace(faceName)
+        , maskImg = ImageManager.loadPicture("masking")    
+        , fw = Window_Base._faceWidth
+        , fh = Window_Base._faceHeight
+        , sx = (faceIndex % 4) * fw
+        , sy = Math.floor(faceIndex / 4) * fh;
+    
+    /*** 스프라이트 생성 */    
+    sprite.x = this._hud.x;
+    sprite.y = this._hud.y;
+    sprite.bitmap = new Bitmap(96,96);
+    
+    /*** 이미지 로딩 처리 */        
+    __bitmap.addLoadListener( function() {  
+         Graphics.startLoading(); 
+         while(!maskImg.isReady()) {
+          Graphics.updateLoading();
+         }
+        sprite.bitmap.drawClippingImage(__bitmap, maskImg, 0, 0, sx, sy);
+        Graphics.endLoading();
+    }.bind(this));
+    
+    return sprite;
+  };  
+  
   HUD.prototype.createHp = function() {      
     this._hp = new Sprite(ImageManager.loadPicture('hp'));
     this.addChild(this._hp);
   };
   
-  // MP 생성
   HUD.prototype.createMp = function() {      
     this._mp = new Sprite(ImageManager.loadPicture('mp'));
     this.addChild(this._mp);
   };    
 
-  // EXP 생성
   HUD.prototype.createExp = function() {      
     this._exp = new Sprite(ImageManager.loadPicture('exr'));
     this.addChild(this._exp);
   };        
   
-  // 텍스트 생성
   HUD.prototype.createText = function() {
-    this._hpText = this.addText(this.getHp);
-    this._mpText = this.addText(this.getMp); 
-    this._expText = this.addText(this.getExp);
-    this._levelText = this.addText(this.getLevel, 16);
+    this._hpText = this.addText(this.getHp.bind(this));
+    this._mpText = this.addText(this.getMp.bind(this)); 
+    this._expText = this.addText(this.getExp.bind(this));
+    this._levelText = this.addText(this.getLevel.bind(this));
   };
   
-  // 좌표 설정
   HUD.prototype.setPosition = function() {      
     this.setCoord(this._face, 0, 0);
     this.setCoord(this._hp, 160, 43);
@@ -149,66 +138,103 @@ RS.Text = RS.Text || function() { this.initialize.apply(this, arguments); };
     this.setCoord(this._levelText, 60, 71);
     this.setCoord(this._expText, 120.5, 83);
   };
-
-  // 플레이어의 현재 레벨
-  HUD.prototype.setPlayer = function() {
-    this._actor = $gameParty.members()[0];
-    this._level = this._actor.level;
-  };
-
-  Object.definePropertie(Game_BattlerBase.prototype, );
   
-  // 텍스트 비트맵 생성
-  HUD.prototype.addText = function(strFunc, size) {
-    var t = new RS.Text(new Bitmap(120, 20));
-    t.bitmap._fontSize = size || 14;
-    t.bitmap.drawParam(strFunc);
-    this.addChild(t);
-    return t;
+  HUD.prototype.addText = function(strFunc) {
+    var text = new Sprite(new Bitmap(120, 20));
+    text._tmp = strFunc;
+    text._log = strFunc.call(this);
+    text.update = function() {
+      if(this._tmp.call(this) != this._log) {
+        this.bitmap.clear();
+        this.bitmap.fontSize = 12;
+        this.bitmap.drawText(this._tmp.call(this), 0, 0, 120, 20, 'center');
+      }
+    };
+    
+    this.addChildAt(text, this.children.length);
+    
+    text.bitmap.fontSize = 12;
+    text.bitmap.drawText(strFunc(), 0, 0, 120, 20, 'center');    
+    
+    return text;
   };
   
   HUD.prototype.getPlayer = function() {
     return $gameParty.members()[0];
   };  
-  
 
+  HUD.prototype.getHp = function() {
+    var player = $gameParty.members()[0];
+    return "%1 / %2".format(player.hp, player.mhp);
+  };
   
-  // HUD.prototype.getHpStr = function() {
-    // var player = $gameParty.members()[0];
-    // return String(player.s, 
-  // }  
+  HUD.prototype.getMp = function() {
+    var player = $gameParty.members()[0];
+    return "%1 / %2".format(player.mp, player.mmp);
+  };  
+  
+  HUD.prototype.getExp = function() {
+    var player = $gameParty.members()[0];
+    return "%1 / %2".format(player.currentExp(), player.nextLevelExp());
+  };    
+  
+  HUD.prototype.getLevel = function() {
+    return "%1".format($gameParty.members()[0].level);
+  };
   
   // HP (비율)
   HUD.prototype.getHpRate = function() {
-    return this._hp.bitmap.width * (this.getPlayer().hp.to_f / this.getPlayer().mhp);
+    return this._hp.bitmap.width * (this.getPlayer().hp / this.getPlayer().mhp);
   };
   
-
+  // MP (비율)
+  HUD.prototype.getMpRate = function() {
+    return this._mp.bitmap.width * (this.getPlayer().mp / this.getPlayer().mmp);
+  };  
+  
+  // Exp (비율)
+  HUD.prototype.getExpRate = function() {
+    return this._exp.bitmap.width * (this.getPlayer().currentExp() / this.getPlayer().nextLevelExp());
+  };    
+  
   HUD.prototype.setCoord = function(s,x,y) {
-    s.x = this._hud.x + x
-    s.y = this._hud.y + y
-  }
+    s.x = this._hud.x + x;
+    s.y = this._hud.y + y;
+  };
 
   HUD.prototype.update = function() {
-      // Sprite.prototype.update.call(this);
-      this.paramUpdate();
+    this._hud.update();
+    this._face.update();
+    this.paramUpdate();
   };
   
-  // HP, MP, EXP 업데이트
   HUD.prototype.paramUpdate = function() {
     this._hp.setFrame(0, 0, this.getHpRate(), this._hp.height );
+    this._mp.setFrame(0, 0, this.getMpRate(), this._mp.height );
+    this._exp.setFrame(0, 0, this.getExpRate(), this._exp.height );
+    this._hpText.update();
+    this._mpText.update();
+    this._expText.update();
+    this._levelText.update();    
   };
     
 })();
 
+/**
+ * @class HUD
+ * @extends PIXI.Stage
+ */ 
 (function() {
 
-  var _Scene_Map_start = Scene_Map.prototype.start;
-  Scene_Map.prototype.start = function() {
-    _Scene_Map_start.call(this);
+  /*** @alias Scene_Map.prorotype.start */
+  var _Scene_Map_createDisplayObjects = Scene_Map.prototype.createDisplayObjects;
+  Scene_Map.prototype.createDisplayObjects = function() {
+    _Scene_Map_createDisplayObjects.call(this);
     this._hud = new HUD();
     this.addChild(this._hud);
   };  
+  
+  /*** @alias Scene_Map.prorotype.terminate */
   var _Scene_Map_terminate = Scene_Map.prototype.terminate;  
   Scene_Map.prototype.terminate = function() {
     this.removeChild(this._hud);

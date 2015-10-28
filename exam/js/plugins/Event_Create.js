@@ -1,36 +1,70 @@
-/**
- * @name 이벤트 생성 플러그인
+/*:
+ * @plugindesc 이벤트 생성 플러그인입니다.
  * @author biud436
  * @since 2015.10.16
  * @version 1.0
- * @description .
+ * @help 
+ * 
+ * 플러그인 커맨드
+ * InstanceCreate(x, y, charName, charIdx)
+ * InstanceDestroy(이벤트번호)
+ * InstanceCopy(x, y, mapID, eventID )
  */
-
- (function() {
  
-   Object.defineProperty(Array.prototype, "first", {
-    get: function() {
-      return this[0];
-    }
-  });
+var RS = RS || {}; 
+ 
+Object.defineProperty(Array.prototype, "first", {
+  get: function() {
+    return this[0];
+  }
+});
 
-  Object.defineProperty(Array.prototype, "last", {
-    get: function() {
-      var idx = this.length - 1;
-      return this[idx];
+Object.defineProperty(Array.prototype, "last", {
+  get: function() {
+    var idx = this.length - 1;
+    return this[idx];
+  }
+});
+
+Array.prototype.delete = function(deleteItem) {
+  var tmp = this.filter(
+    function(findValue) {
+      return findValue != deleteItem;
     }
-  });
-  t
-  Array.prototype.delete = function(deleteItem) {
-    var tmp = this.filter(
-      function(findValue) {
-        return findValue != deleteItem;
-      }
-    );
-    return tmp;
-  };
+  );
+  return tmp;
+};
   
-  Utils.instance_create = function(x, y, charName, charIdx) {
+(function() {
+  
+  var _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+  Game_Interpreter.prototype.pluginCommand = function(command, args) {
+    _Game_Interpreter_pluginCommand.call(this, command, args);
+    switch(command) {
+    case '이벤트생성':
+      RS.instanceCreate.apply(this, args);
+      break;
+    case '이벤트복제':
+      RS.instanceCopy.apply(this, args);
+      break;         
+    case '이벤트삭제':
+      RS.instanceDestroy($gameMap.events(Number(args[0])));
+      break;                   
+    }
+  };  
+  
+  RS.loadDataFile = DataManager.loadDataFile;
+  
+  RS.loadMapData = function(mapId) {
+      if (mapId > 0) {
+          var filename = 'Map%1.json'.format(mapId.padZero(3));
+          this.loadDataFile('$dataMap', filename);
+      } else {
+          this.makeEmptyMap();
+      }
+  };  
+  
+  RS.instanceCreate = function(x, y, charName, charIdx) {
     var oEvent = $gameMap._events.last;
     var eventID = oEvent.eventId() + 1;
     var eventName = "EV" + String(eventID / 100).replace(".","")
@@ -100,23 +134,24 @@
         "trigger": 0,
         "walkAnime": true
       }],
-      "x": x,
-      "y": y
+      "x": Number(x),
+      "y": Number(y)
     });
-    return Utils.instance_copy(x, y, $gameMap.mapId, eventID);
+    return RS.instanceCopy(Number(x), Number(y), $gameMap.mapId, eventID);
   }
  
-  Utils.instance_copy = function(x, y, mapID, eventID ) {
-    var _event = new Game_Event(mapID || $gameMap.mapId, eventID || 1);
-    _event.setPosition(x || $gamePlayer._x, y || $gamePlayer._y + 1);
+  RS.instanceCopy = function(x, y, mapID, eventID ) {
+    var _event = new Game_Event(Number(mapID) || $gameMap.mapId, Number(eventID) || 1);
+    _event.setPosition(Number(x) || $gamePlayer._x, Number(y) || $gamePlayer._y + 1);
     _event.lock();
     $gameMap._events.push(_event);
     
     SceneManager._scene._spriteset.createCharacters();
+    _event.unlock();
     return $gameMap._events.last;
   };
   
-  Utils.instance_destroy = function(_event) {
+  RS.instanceDestroy = function(_event) {
     if(_event instanceof Game_Event)
     {
       $gameMap._events.forEach( function(event) {
