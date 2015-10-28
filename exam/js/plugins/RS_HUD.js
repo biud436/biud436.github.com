@@ -95,12 +95,7 @@ function HUD() {
     
     /*** 이미지 로딩 처리 */        
     __bitmap.addLoadListener( function() {  
-         Graphics.startLoading(); 
-         while(!maskImg.isReady()) {
-          Graphics.updateLoading();
-         }
         sprite.bitmap.drawClippingImage(__bitmap, maskImg, 0, 0, sx, sy);
-        Graphics.endLoading();
     }.bind(this));
     
     return sprite;
