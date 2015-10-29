@@ -20,6 +20,10 @@
  * @desc 페이스칩의 가장자리를 다듬어 부드럽게 묘화합니다.
  * @default true
  *
+ * @param 블러처리
+ * @desc PC Windows(O), PC Chrome(X)
+ * @default false
+ *
  * @help 이 플러그인은 플러그인 커맨드가 없습니다.
  * 투명도조절
  * 위치지정자
@@ -42,6 +46,7 @@ function HUD() {
   var height = Number(parameters['세로'] || 101 );
   var pd = Number(parameters['간격'] || 0);
   var smooth = Boolean(parameters['가장자리옵션'] ==="true");
+  var blurProcessing = Boolean(parameters['블러처리'] ==="true");
   var angle = Math.PI / 180.0;
   
   HUD.prototype = new PIXI.Stage();
@@ -80,6 +85,17 @@ function HUD() {
     this._setDirty();
   };  
   
+  Bitmap.prototype.drawClippingImageNonBlur = function(bitmap, _x, _y, _sx, _sy) {
+    var context = this._context;
+    context.save();
+    context.beginPath();
+    context.arc(_x + 48, _y + 48 , 48, 0, Math.PI * 2, false);
+    context.clip();
+    context.drawImage(bitmap._canvas, _sx, _sy, 144, 144, 0, 0, 96, 96);
+    context.restore();
+    this._setDirty();
+  };    
+  
   HUD.prototype.circleClippingMask = function(faceName, faceIndex) {
   
     /*** 변수 */
@@ -96,15 +112,21 @@ function HUD() {
     sprite.y = this._hud.y;
     sprite.bitmap = new Bitmap(96,96);
     
-    /*** 이미지 로딩 처리 */        
-    __bitmap.addLoadListener( function() {  
-         // Graphics.startLoading(); 
-         // while(!maskImg.isReady()) {
-          // Graphics.updateLoading();
-         // }
-        sprite.bitmap.drawClippingImage(__bitmap, maskImg, 0, 0, sx, sy);
-        // Graphics.endLoading();
-    }.bind(this));
+    if(blurProcessing) {
+      /*** 이미지 로딩 처리 */        
+      __bitmap.addLoadListener( function() {  
+           // Graphics.startLoading(); 
+           // while(!maskImg.isReady()) {
+            // Graphics.updateLoading();
+           // }
+          sprite.bitmap.drawClippingImage(__bitmap, maskImg, 0, 0, sx, sy);
+          // Graphics.endLoading();
+      }.bind(this));        
+    } else {
+        __bitmap.addLoadListener( function() {  
+          sprite.bitmap.drawClippingImageNonBlur(__bitmap, 0, 0, sx, sy);
+        }.bind(this));
+    }
     
     return sprite;
   };  
