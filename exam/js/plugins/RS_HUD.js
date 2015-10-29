@@ -83,8 +83,13 @@ function HUD() {
   
   HUD.prototype.createFace = function() {
     var player = $gameParty.members()[0];
-    this._face = this.circleClippingMask(player.faceName(), player.faceIndex());
-    this.addChild(this._face);  
+    this._faceBitmap = ImageManager.loadFace(player.faceName());
+    this._maskBitmap = ImageManager.loadPicture("masking");
+    this._maskBitmap.addLoadListener(function() {
+        this._faceBitmap.addLoadListener(this.circleClippingMask.bind(this, player.faceIndex()));
+    }.bind(this));
+    //this._face = this.circleClippingMask(player.faceName(), player.faceIndex());
+    //this.addChild(this._face);  
   };
   
   Bitmap.prototype.drawClippingImage = function(bitmap, maskImage , _x, _y, _sx, _sy) {
@@ -108,39 +113,21 @@ function HUD() {
     this._setDirty();
   };    
   
-  HUD.prototype.circleClippingMask = function(faceName, faceIndex) {
-  
+  HUD.prototype.circleClippingMask = function(faceIndex) {        
     /*** 변수 */
     var sprite = new Sprite()
-        , __bitmap = ImageManager.loadFace(faceName)
-        , maskImg = ImageManager.loadPicture("masking")    
         , fw = Window_Base._faceWidth
         , fh = Window_Base._faceHeight
         , sx = (faceIndex % 4) * fw
-        , sy = Math.floor(faceIndex / 4) * fh;
-    
-    /*** 스프라이트 생성 */    
-    sprite.x = this._hud.x;
-    sprite.y = this._hud.y;
-    sprite.bitmap = new Bitmap(96,96);
-    
-    if(blurProcessing) {
-      /*** 이미지 로딩 처리 */        
-      __bitmap.addLoadListener( function() {  
-           // Graphics.startLoading(); 
-           // while(!maskImg.isReady()) {
-            // Graphics.updateLoading();
-           // }
-          sprite.bitmap.drawClippingImage(__bitmap, maskImg, 0, 0, sx, sy);
-          // Graphics.endLoading();
-      }.bind(this));        
-    } else {
-        __bitmap.addLoadListener( function() {  
-          sprite.bitmap.drawClippingImageNonBlur(__bitmap, 0, 0, sx, sy);
-        }.bind(this));
-    }
-    
-    return sprite;
+        , sy = Math.floor(faceIndex / 4) * fh;  
+        
+      sprite.x = this._hud.x;
+      sprite.y = this._hud.y;
+      sprite.bitmap = new Bitmap(96, 96);
+      sprite.bitmap.drawClippingImage(this._faceBitmap, this._maskBitmap, 0, 0, sx, sy);
+      this._face = sprite;
+      this.addChild(this._face);         
+
   };  
   
   HUD.prototype.createHp = function() {      
@@ -166,7 +153,7 @@ function HUD() {
   };
   
   HUD.prototype.setPosition = function() {      
-    this.setCoord(this._face, 0, 0);
+    if(this.face) { this.setCoord(this._face, 0, 0); }
     this.setCoord(this._hp, 160, 43);
     this.setCoord(this._mp, 160, 69);
     this.setCoord(this._exp, 83, 91);
@@ -241,7 +228,7 @@ function HUD() {
 
   HUD.prototype.update = function() {
     this._hud.update();
-    this._face.update();
+    if(this._face) { this._face.update(); }
     this.paramUpdate();
   };
   
