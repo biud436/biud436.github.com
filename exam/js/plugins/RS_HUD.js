@@ -21,7 +21,7 @@
  * @default true
  *
  * @param 블러처리
- * @desc PC Windows(O), PC Chrome(X).
+ * @desc PC Windows(O), PC Chrome(X)
  * @default false
  *
  * @help 이 플러그인은 플러그인 커맨드가 없습니다.
@@ -89,7 +89,7 @@ function HUD() {
     var context = this._context;
     context.save();
     context.beginPath();
-    context.arc(_x + 48, _y + 48 , 48, 0, Math.PI * 2, false);
+    context.arc(_x + 45, _y + 45 , 45, 0, Math.PI * 2, false);
     context.clip();
     context.drawImage(bitmap._canvas, _sx, _sy, 144, 144, 0, 0, 96, 96);
     context.restore();
