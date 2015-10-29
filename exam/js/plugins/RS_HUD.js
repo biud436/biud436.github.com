@@ -21,7 +21,7 @@
  * @default true
  *
  * @param 블러처리
- * @desc PC Windows(O), PC Chrome(X)
+ * @desc PC Windows(O), PC Chrome(X).
  * @default false
  *
  * @help 이 플러그인은 플러그인 커맨드가 없습니다.
