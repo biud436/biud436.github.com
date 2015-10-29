@@ -21,6 +21,10 @@
  * @default true
  *
  * @help 이 플러그인은 플러그인 커맨드가 없습니다.
+ * 투명도조절
+ * 위치지정자
+ * 보이기, 숨기기 
+ * 대화창이 표시됐을 때 HUD 감추기 옵션
  */
 
 function HUD() {   
@@ -70,7 +74,6 @@ function HUD() {
     var context = this._context;
     context.save();
     context.drawImage(maskImage._canvas, _x, _y, 96, 96);
-    // 새 도형을그릴 때, 기존 도형과 겹치는 부분만 그립니다.
     context.globalCompositeOperation = 'source-atop';
     context.drawImage(bitmap._canvas, _sx, _sy, 144, 144, 0, 0, 96, 96);
     context.restore();
@@ -95,7 +98,12 @@ function HUD() {
     
     /*** 이미지 로딩 처리 */        
     __bitmap.addLoadListener( function() {  
+         // Graphics.startLoading(); 
+         // while(!maskImg.isReady()) {
+          // Graphics.updateLoading();
+         // }
         sprite.bitmap.drawClippingImage(__bitmap, maskImg, 0, 0, sx, sy);
+        // Graphics.endLoading();
     }.bind(this));
     
     return sprite;
@@ -210,7 +218,12 @@ function HUD() {
     this._hpText.update();
     this._mpText.update();
     this._expText.update();
-    this._levelText.update();    
+    this._levelText.update(); 
+
+    if(this._face.bitmap._image === ('null' || 'undefined')) {
+      console.log("비트맵 이미지가 생성되지 않았습니다");
+    }
+    
   };
     
 })();
