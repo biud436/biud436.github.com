@@ -220,8 +220,10 @@ function HUD() {
     this._expText.update();
     this._levelText.update(); 
 
-    if(this._face.bitmap._image === ('null' || 'undefined')) {
+    if(this._face.bitmap._image === (null || 'undefined')) {
       console.log("비트맵 이미지가 생성되지 않았습니다");
+      this.removeChild(this._face);
+      this.createFace();
     }
     
   };
