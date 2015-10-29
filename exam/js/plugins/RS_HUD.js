@@ -24,13 +24,16 @@
  * @desc PC Windows(O), PC Chrome(X)
  * @default false
  *
- * @help 이 플러그인은 플러그인 커맨드가 없습니다.
- * 투명도조절
- * 위치지정자
- * 보이기, 숨기기 
+ * @help 
+ * $gameHud.opacity = 0 ~ 255;
+ * $gameHud.visible = false / true;
+ * $gameHud.x = x좌표;
+ * $gameHud.y = y좌표;
  * 대화창이 표시됐을 때 HUD 감추기 옵션
  */
 
+var $gameHud = null;
+ 
 function HUD() {   
   this.initialize.apply(this, arguments); 
 }
@@ -51,8 +54,15 @@ function HUD() {
   
   HUD.prototype = new PIXI.Stage();
 
+  HUD._visible = HUD._visible || true;
+  HUD._opacity = HUD._opacity || 255;
+  HUD.__x = HUD.__x || 0;
+  HUD.__y = HUD.__y || 0;
+  
   HUD.prototype.initialize = function() {
       Stage.prototype.initialize.call(this);
+      HUD.__x = pd;
+      HUD.__y = Graphics.boxHeight - height - pd;
       this.createHud();
       this.createFace();
       this.createHp();
@@ -60,13 +70,15 @@ function HUD() {
       this.createExp();
       this.createText();
       this.setPosition();
+      this.opacity = HUD._opacity;
+      this.visible = HUD._visible;
   };
   
   HUD.prototype.createHud = function() {      
     this._hud = new Sprite(ImageManager.loadPicture('hud_window_empty'));
     this.addChild(this._hud);
-    this._hud.x = pd;
-    this._hud.y = Graphics.boxHeight - height - pd;
+    this._hud.x = HUD.__x;
+    this._hud.y = HUD.__y;
   };
   
   HUD.prototype.createFace = function() {
@@ -249,6 +261,54 @@ function HUD() {
     }
     
   };
+  
+  Object.defineProperty(HUD.prototype, 'visible', {
+      get: function() {
+          return HUD._visible;
+      },
+      set: function(value) {
+          this.children.forEach( function(i) {
+            i.visible = value;
+          }.bind(this));
+          HUD._visible = value;
+      },
+      configurable: true
+  });
+
+  Object.defineProperty(HUD.prototype, 'opacity', {
+      get: function() {
+          return HUD._opacity;
+      },
+      set: function(value) {
+          this.children.forEach( function(i) {
+            i.opacity = value.clamp(0, 255);
+          }.bind(this));
+          HUD._opacity = value.clamp(0, 255);
+      },
+      configurable: true
+  });  
+  
+  Object.defineProperty(HUD.prototype, 'x', {
+      get: function() {
+          return HUD.__x;
+      },
+      set: function(value) {
+          this._hud.x = HUD.__x = value.clamp(0, Graphics.boxWidth);
+          this.setPosition();
+      },
+      configurable: true
+  });    
+  
+  Object.defineProperty(HUD.prototype, 'y', {
+      get: function() {
+          return HUD.__y;
+      },
+      set: function(value) {
+          this._hud.y = HUD.__y = value.clamp(0, Graphics.boxHeight);
+          this.setPosition();
+      },
+      configurable: true
+  });      
     
 })();
 
@@ -262,14 +322,15 @@ function HUD() {
   var _Scene_Map_createDisplayObjects = Scene_Map.prototype.createDisplayObjects;
   Scene_Map.prototype.createDisplayObjects = function() {
     _Scene_Map_createDisplayObjects.call(this);
-    this._hud = new HUD();
-    this.addChild(this._hud);
+    $gameHud = new HUD();
+    this.addChild($gameHud);
   };  
   
   /*** @alias Scene_Map.prorotype.terminate */
   var _Scene_Map_terminate = Scene_Map.prototype.terminate;  
   Scene_Map.prototype.terminate = function() {
-    this.removeChild(this._hud);
+    this.removeChild($gameHud);
+    $gameHud = null;
     _Scene_Map_terminate.call(this);
   };
 })();
