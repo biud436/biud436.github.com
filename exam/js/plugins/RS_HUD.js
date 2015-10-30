@@ -133,7 +133,7 @@ function HUD() {
         /*** /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/ */
         sprite.bitmap.drawClippingImage(this._faceBitmap, this._maskBitmap, 0, 0, sx, sy);
       } else {
-        if(typeof(data) === 'object' && data["getManifest"]() === undefined) {
+        if(typeof(data) === 'object' && data["getManifest"] === undefined) {
           /*** PC Chrome 46*/
           sprite.bitmap.drawClippingImageNonBlur(this._faceBitmap, 0, 0, sx, sy);
         } else if(data["getManifest"]().name === "node-webkit") {
