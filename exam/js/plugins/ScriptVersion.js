@@ -1,6 +1,10 @@
 /*:
  * @plugindesc ScriptVersion
  * @author biud436
+ * 
+ * @param Version
+ * @desc 
+ * @default 201510292
  */
 
 (function() {
