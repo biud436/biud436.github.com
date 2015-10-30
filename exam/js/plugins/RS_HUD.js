@@ -123,22 +123,29 @@ function HUD() {
     sprite.y = this._hud.y;
     sprite.bitmap = new Bitmap(96, 96);
     
-    /*** 플랫폼 확인 */
-    var agent = navigator.userAgent;
-    var data = agent.match(/Chrome/) && agent.match(/Windows/) && chrome.runtime;
-    
-    if(blurProcessing && Utils.isMobileDevice()) {
-      /*** /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/ */
-      sprite.bitmap.drawClippingImage(this._faceBitmap, this._maskBitmap, 0, 0, sx, sy);
-    } else {
-      if(data["getManifest"] === undefined) {
-        /*** PC Chrome 46*/
-        sprite.bitmap.drawClippingImageNonBlur(this._faceBitmap, 0, 0, sx, sy);
-      } else if(data["getManifest"]().name === "node-webkit") {
-        /*** PC (MV node-webkit) */
+    try {
+
+      /*** 플랫폼 확인 */
+      var agent = navigator.userAgent;
+      var data = agent.match(/Chrome/) && agent.match(/Windows/) && chrome.runtime;
+      
+      if(blurProcessing && Utils.isMobileDevice()) {
+        /*** /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/ */
         sprite.bitmap.drawClippingImage(this._faceBitmap, this._maskBitmap, 0, 0, sx, sy);
+      } else {
+        if(typeof(data) === 'object' && data["getManifest"]() === undefined) {
+          /*** PC Chrome 46*/
+          sprite.bitmap.drawClippingImageNonBlur(this._faceBitmap, 0, 0, sx, sy);
+        } else if(data["getManifest"]().name === "node-webkit") {
+          /*** PC (MV node-webkit) */
+          sprite.bitmap.drawClippingImage(this._faceBitmap, this._maskBitmap, 0, 0, sx, sy);
+        }
       }
+    
+    } catch { 
+    
     }
+
     this._face = sprite;
     this.addChild(this._face);         
   };  
