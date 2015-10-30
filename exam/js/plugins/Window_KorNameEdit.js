@@ -16,6 +16,10 @@ function TextBox() {
 
 (function() {
 
+  var metaData = document.getElementsByName("viewport")[0];
+  var viewport = metaData[metaData.length - 1];
+  var viewport.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi";
+
   var parameters = PluginManager.parameters('Window_KorNameEdit');
   var __windowWidth = Number(parameters['windowWidth'] || 580);
   
