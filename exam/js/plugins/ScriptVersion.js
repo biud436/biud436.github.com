@@ -25,5 +25,23 @@
           return false;
       }
   };
+  
+  DataManager.loadDataFile = function(name, src) {
+      var xhr = new XMLHttpRequest();
+      var url = 'data/' + src + scriptVersion;
+      xhr.open('GET', url);
+      xhr.overrideMimeType('application/json');
+      xhr.onload = function() {
+          if (xhr.status < 400) {
+              window[name] = JSON.parse(xhr.responseText);
+              DataManager.onLoad(window[name]);
+          }
+      };
+      xhr.onerror = function() {
+          DataManager._errorUrl = DataManager._errorUrl || url;
+      };
+      window[name] = null;
+      xhr.send();
+  };  
 
 })();
