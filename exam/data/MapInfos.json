@@ -1,6 +1,6 @@
 [
 null,
-{"id":1,"expanded":false,"name":"Forest Town","order":1,"parentId":0,"scrollX":816,"scrollY":624},
-{"id":2,"expanded":false,"name":"Base Interior","order":2,"parentId":0,"scrollX":1152,"scrollY":1254},
-{"id":3,"expanded":false,"name":"Inn 1F","order":3,"parentId":0,"scrollX":832,"scrollY":640}
+{"id":1,"expanded":false,"name":"Forest Town","order":1,"parentId":0,"scrollX":748,"scrollY":396},
+{"id":2,"expanded":false,"name":"Base Interior","order":2,"parentId":0,"scrollX":1152,"scrollY":1254.6666666666667},
+{"id":3,"expanded":false,"name":"Inn 1F","order":3,"parentId":0,"scrollX":712,"scrollY":553.3333333333334}
 ]
