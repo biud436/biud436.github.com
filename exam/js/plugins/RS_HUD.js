@@ -22,14 +22,18 @@
  *
  * @param 블러처리
  * @desc PC Windows(O), PC Chrome(X)
- * @default false
+ * @default true
+ *
+ * @param 처음부터 켜기
+ * @desc 게임이 시작되자마자 HUD 가 켜집니다
+ * @default true 
  *
  * @help 
+ * [스크립트]
  * $gameHud.opacity = 0 ~ 255;
  * $gameHud.visible = false / true;
  * $gameHud.x = x좌표;
  * $gameHud.y = y좌표;
- * 대화창이 표시됐을 때 HUD 감추기 옵션
  */
 
 var $gameHud = null;
@@ -70,8 +74,6 @@ function HUD() {
       this.createExp();
       this.createText();
       this.setPosition();
-      this.opacity = HUD._opacity;
-      this.visible = HUD._visible;
   };
   
   HUD.prototype.createHud = function() {      
@@ -88,8 +90,6 @@ function HUD() {
     this._maskBitmap.addLoadListener(function() {
         this._faceBitmap.addLoadListener(this.circleClippingMask.bind(this, player.faceIndex()));
     }.bind(this));
-    //this._face = this.circleClippingMask(player.faceName(), player.faceIndex());
-    //this.addChild(this._face);  
   };
   
   Bitmap.prototype.drawClippingImage = function(bitmap, maskImage , _x, _y, _sx, _sy) {
@@ -116,18 +116,31 @@ function HUD() {
   HUD.prototype.circleClippingMask = function(faceIndex) {        
     /*** 변수 */
     var sprite = new Sprite()
-        , fw = Window_Base._faceWidth
-        , fh = Window_Base._faceHeight
-        , sx = (faceIndex % 4) * fw
-        , sy = Math.floor(faceIndex / 4) * fh;  
+        , fw = Window_Base._faceWidth, fh = Window_Base._faceHeight
+        , sx = (faceIndex % 4) * fw, sy = Math.floor(faceIndex / 4) * fh;  
         
-      sprite.x = this._hud.x;
-      sprite.y = this._hud.y;
-      sprite.bitmap = new Bitmap(96, 96);
+    sprite.x = this._hud.x;
+    sprite.y = this._hud.y;
+    sprite.bitmap = new Bitmap(96, 96);
+    
+    /*** 플랫폼 확인 */
+    var agent = navigator.userAgent;
+    var data = agent.match(/Chrome/) && agent.match(/Windows/) && chrome.runtime;
+    
+    if(blurProcessing && Utils.isMobileDevice()) {
+      /*** /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/ */
       sprite.bitmap.drawClippingImage(this._faceBitmap, this._maskBitmap, 0, 0, sx, sy);
-      this._face = sprite;
-      this.addChild(this._face);         
-
+    } else {
+      if(data["getManifest"] === undefined) {
+        /*** PC Chrome 46*/
+        sprite.bitmap.drawClippingImageNonBlur(this._faceBitmap, 0, 0, sx, sy);
+      } else if(data["getManifest"]().name === "node-webkit") {
+        /*** PC (MV node-webkit) */
+        sprite.bitmap.drawClippingImage(this._faceBitmap, this._maskBitmap, 0, 0, sx, sy);
+      }
+    }
+    this._face = sprite;
+    this.addChild(this._face);         
   };  
   
   HUD.prototype.createHp = function() {      
@@ -310,6 +323,8 @@ function HUD() {
   Scene_Map.prototype.createDisplayObjects = function() {
     _Scene_Map_createDisplayObjects.call(this);
     $gameHud = new HUD();
+    $gameHud.opacity = HUD._opacity;
+    $gameHud.visible = HUD._visible;    
     this.addChild($gameHud);
   };  
   
