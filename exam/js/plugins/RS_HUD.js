@@ -53,6 +53,30 @@ function HUD() {
   this.initialize.apply(this, arguments); 
 }
 
+
+function dragStart(ev) {
+   ev.dataTransfer.effectAllowed='copy';
+   ev.dataTransfer.setData("id", ev.target.getAttribute('id'));
+   ev.dataTransfer.setDragImage(ev.target,100,100);
+   return true;
+};
+
+function dragEnter(ev) {
+   event.preventDefault();
+   return true;
+};
+
+function dragOver(ev) {
+     event.preventDefault();
+};
+
+function dragDrop(ev) {
+   var data = ev.dataTransfer.getData("id");
+   ev.target.appendChild(document.getElementById(data));
+   ev.stopPropagation();
+   return false;
+};
+
 /**
  * @class HUD
  * @extends PIXI.Stage
@@ -78,6 +102,15 @@ function HUD() {
   
   HUD.prototype.initialize = function() {
       Stage.prototype.initialize.call(this);
+      
+      /*** Bind Top Section*/
+      this._topSec = document.createElement('div');
+      this._topSec.id = "topSec";
+      this._topSec.ondragenter="return dragEnter(event)";
+      this._topSec.ondrop="return dragDrop(event)";
+      this._topSec.ondragover="return dragOver(event)";
+      this._topSec.style = "#topSec { width: 317px; height: 101px; background: red; margin: 20px auto; }";      
+      
       this.createHud();
       this.setAnchor(szAnchor);
       this.createFace();

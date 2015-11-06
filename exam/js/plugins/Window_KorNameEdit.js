@@ -1,4 +1,5 @@
 ﻿/*:
+ * Window_KorNameEdit.js
  * @plugindesc 한글 이름 입력 플러그인
  * @author 러닝은빛(biud436)
  * @since 2015.10.19
@@ -53,6 +54,10 @@ function TextBox() {
       }
       break;  
     case 13:
+      if(this.getTextLength() <= 0) {
+        e.preventDefault();
+      }
+      break;
     case 229:
       break;
     }    

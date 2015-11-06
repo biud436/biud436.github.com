@@ -43,10 +43,11 @@
  * @namespace RS
  */ 
 var RS = RS || {};  
+
 (function() {
 
   /*** 각도 함수 */
-  RS.Utils = { 
+  RS = { 
     convertToRadian : function(angle) {
       return (Math.PI / 180) * angle;
     },
@@ -159,7 +160,7 @@ var RS = RS || {};
   Scene_Title.prototype.isCheckDir = function(dir) {
   
     var isLeft = !this._rotateRight && this._rotateLeft
-        , radian = RS.Utils.convertToRadian(this._max)
+        , radian = RS.convertToRadian(this._max)
         , isRight = this._rotateRight && !this._rotateLeft
         , result = null;
     
@@ -175,10 +176,10 @@ var RS = RS || {};
       return false;
     }
     if(this.isCheckDir('left')) {
-      RS.Utils.wrapAngle(this._angle -= this.upAngle());
+      RS.wrapAngle(this._angle -= this.upAngle());
     }
     else if(this.isCheckDir('right')) {
-      RS.Utils.wrapAngle(this._angle += this.upAngle());
+      RS.wrapAngle(this._angle += this.upAngle());
     }
     this.moveMenu();
     this.updateScale();
@@ -225,24 +226,21 @@ var RS = RS || {};
     
     var i = this.menuIndex()
         , result = null;
-        
+    
+    SoundManager.playOk();
+    
     result = {
       1: function() { 
-            SoundManager.playOk();
             this.commandNewGame();
             this._isGameStarted = true;
         }
     , 2: function() {
           if(DataManager.isAnySavefileExists()) {
-            SoundManager.playOk();
             this.commandContinue();
-          } else {
-            SoundManager.playBuzzer();
           }
         }
     , 0: function() {
-          SoundManager.playOk();
-          this.commandOptions();
+          this.commandExit();
         }
     }[i].call(this);
     
@@ -253,7 +251,7 @@ var RS = RS || {};
       SoundManager.playCursor();
       this._rotateLeft = true;
       this._rotateRight = false;
-      RS.Utils.wrapMax(this._max -= _maxAngle);
+      RS.wrapMax(this._max -= _maxAngle);
     }
   };
 
@@ -262,7 +260,7 @@ var RS = RS || {};
       SoundManager.playCursor();
       this._rotateLeft = false;
       this._rotateRight = true;
-      RS.Utils.wrapMax(this._max +=_maxAngle);
+      RS.wrapMax(this._max +=_maxAngle);
     }
   };  
 
@@ -291,7 +289,7 @@ var RS = RS || {};
   };
   
   Scene_Title.prototype.move = function(sprite, r, angle) {
-    var x = ( this._originPosition[0] )+ r * Math.cos(angle) - sprite.width / 2
+    var x = ( this._originPosition[0] )+ r * Math.sin(angle) - sprite.width / 2
         , y = ( this._originPosition[1] ) + r * Math.sin(angle) - sprite.height / 2;
     sprite.position.x = x;
     sprite.position.y = y;
@@ -307,11 +305,12 @@ var RS = RS || {};
   Scene_Title.prototype.makeText = function(str) {
     var text = new Sprite_Button()
         , rect = null;
-    text.bitmap = new Bitmap(100, 48);
+    text.bitmap = new Bitmap(120, 72);
     rect = text.bitmap.rect;
-    text.bitmap.outlineWidth = 3;
+    text.bitmap.outlineWidth = 1;
+    text.bitmap.fontSize = 24;
     text.bitmap.outlineColor = _outLineColor;
-    text.bitmap.drawText(String(str), rect.x, rect.y, rect.width, rect.height);
+    text.bitmap.drawText(String(str), 0, 0, 120, 72);
     text.setClickHandler(this.selectMenu.bind(this));
     this.addChild(text);
     return text;
