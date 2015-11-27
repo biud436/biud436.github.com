@@ -1,15 +1,13 @@
 /*:
  * Audio_Additional_Support.js
  * @plugindesc Audio Additional Support
+ * 
  */
 
 (function() {
+
+  WebAudio._Suppot = {};
   
-  /**
-   * @static
-   * @method _createContext
-   * @private
-   */
   WebAudio._createContext = function() {
       try {
           this._context =  new (AudioContext || webkitAudioContext || mozAudioContext)();
@@ -23,16 +21,20 @@
       if (audio.canPlayType) {
           this._canPlayOgg = audio.canPlayType('audio/ogg codecs="vorbis"');
           this._canPlayM4a = audio.canPlayType('audio/x-m4a');
-          this._canPlayWav = audio.canPlayType('audio/wav; codecs="1"');
-          this._canPlayMp3 = audio.canPlayType("audio/mpeg");
-          this._canPlayMp4 = audio.canPlayType("audio/mp4");
-          WebAudio._Suppot['ogg'] = !!this._canPlayOgg;
-          WebAudio._Suppot['m4a'] = !!this._canPlayM4a
-          WebAudio._Suppot['wav'] = !!this._canPlayWav;          
-          WebAudio._Suppot['mp3'] = !!this._canPlayMp3;          
-          WebAudio._Suppot['mp4'] = !!this._canPlayMp4;
+          // this._canPlayWav = audio.canPlayType('audio/wav; codecs="1"');
+          // this._canPlayMp3 = audio.canPlayType("audio/mpeg");
+          // this._canPlayMp4 = audio.canPlayType("audio/mp4");
+          WebAudio._setSupport();
       }
   };
+  
+  WebAudio._setSupport = function() {
+    var type = ['Ogg','M4a'];
+    // var type = ['Ogg','M4a','Wav','Mp3','Mp4'];
+    type.forEach(function(i) {
+      WebAudio._Suppot[i] = !!this['_canPlay' + i];    
+    }.bind(this));
+  }
   
   WebAudio.canPlayType = function(type) {
       if (!this._initialized) {
@@ -42,14 +44,15 @@
   };
   
   AudioManager.audioFileExt = function() {
-      var type = ['ogg','m4a','wav','mp3','mp4'];
+    var type = ['Ogg','M4a'];
+    // var type = ['Ogg','M4a','Wav','Mp3','Mp4'];
       type.forEach(function(i,e,arr) {
         if(WebAudio.canPlayType(i)) {
-          return '.' + arr[i];
+          return '.' + arr[e].toLowerCase();
         }
       }.bind(this));
   };
-
+  
   AudioManager.createBuffer = function(folder, name, ext) {
       ext = ext || this.audioFileExt();
       var url = this._path + folder + '/' + encodeURIComponent(name) + ext;
@@ -61,9 +64,8 @@
                 return new WebAudio(url);
             }
       } catch(err) {
-            var url = this._path + folder + '/' + encodeURIComponent(name) + ext;
-            return new WebAudio(
+        ext = undefined;
       }
-  };
-
+  };  
+  
 })();
