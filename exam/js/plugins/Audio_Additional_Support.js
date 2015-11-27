@@ -6,8 +6,6 @@
 
 (function() {
 
-  WebAudio._Suppot = {};
-  
   WebAudio._createContext = function() {
       try {
           this._context =  new (AudioContext || webkitAudioContext || mozAudioContext)();
@@ -21,19 +19,20 @@
       if (audio.canPlayType) {
           this._canPlayOgg = audio.canPlayType('audio/ogg codecs="vorbis"');
           this._canPlayM4a = audio.canPlayType('audio/x-m4a');
-          // this._canPlayWav = audio.canPlayType('audio/wav; codecs="1"');
-          // this._canPlayMp3 = audio.canPlayType("audio/mpeg");
-          // this._canPlayMp4 = audio.canPlayType("audio/mp4");
+          this._canPlayWav = audio.canPlayType('audio/wav; codecs="1"');
+          this._canPlayMp3 = audio.canPlayType("audio/mpeg");
+          this._canPlayMp4 = audio.canPlayType("audio/mp4");
           WebAudio._setSupport();
       }
   };
   
+  WebAudio._Suppot = {};
   WebAudio._setSupport = function() {
-    var type = ['Ogg','M4a'];
-    // var type = ['Ogg','M4a','Wav','Mp3','Mp4'];
-    type.forEach(function(i) {
-      WebAudio._Suppot[i] = !!this['_canPlay' + i];    
-    }.bind(this));
+    WebAudio._Suppot['Ogg'] = !!this._canPlayOgg;
+    WebAudio._Suppot['M4a'] = !!this._canPlayM4a;
+    WebAudio._Suppot['Wav'] = !!this._canPlayWav;
+    WebAudio._Suppot['Mp3'] = !!this._canPlayMp3;
+    WebAudio._Suppot['Mp4'] = !!this._canPlayMp4;
   }
   
   WebAudio.canPlayType = function(type) {
@@ -44,8 +43,7 @@
   };
   
   AudioManager.audioFileExt = function() {
-    var type = ['Ogg','M4a'];
-    // var type = ['Ogg','M4a','Wav','Mp3','Mp4'];
+    var type = ['Ogg','M4a','Wav','Mp3','Mp4'];
       type.forEach(function(i,e,arr) {
         if(WebAudio.canPlayType(i)) {
           return '.' + arr[e].toLowerCase();
