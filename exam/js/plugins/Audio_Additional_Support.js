@@ -43,12 +43,13 @@
       return WebAudio._Suppot[type];
   };
   
-  // AudioManager.audioFileExt = function() {
-    // var type = ['Ogg','M4a'];
-    // type.forEach(function(i,e,arr) {
-      
-    // }.bind(this));
-  // };
+  AudioManager.audioFileExt = function() {
+      if (WebAudio.canPlayOgg()) {
+          return '.ogg';
+      } else {
+          return '.m4a';
+      }
+  };
   
   // AudioManager.createBuffer = function(folder, name) {
       // var ext = this.audioFileExt();
