@@ -60,6 +60,7 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
   }
 
   RS.ChangeLoadingImage.drawText = function(context, text, dx, dy) {
+
     context.font = fontFormat;
     context.textBaseline = 'alphabetic';
 
@@ -67,10 +68,10 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
     context.lineWidth = 1;
     context.lineJoin = 'round';
 
-    context.strokeText(text, dx, dy, 200);
+    context.strokeText(String(this._count) + text, dx, dy, 200);
 
     context.fillStyle = 'white';
-    context.fillText(text, dx, dy, 200);
+    context.fillText(String(this._count), dx, dy, 200);
   }
 
   RS.ChangeLoadingImage.startLoading = function() {
@@ -100,7 +101,6 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
 
   SceneManager.initGraphics = function() {
       var type = this.preferableRendererType();
-      RS.ChangeLoadingImage.createStyleSheet();
       Graphics.initialize(this._screenWidth, this._screenHeight, type);
       Graphics.boxWidth = this._boxWidth;
       Graphics.boxHeight = this._boxHeight;
@@ -135,6 +135,8 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
           context.drawImage(this._loadingImageGauge, 0, 0);
           context.drawImage(this._loadingImageText, dx, dy);
 
+          RS.ChangeLoadingImage.drawText(context, "%", dx, dy);
+
           context.restore();
 
       }
@@ -167,5 +169,7 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
       xhr.send();
       RS.ChangeLoadingImage.startLoading();
   };
+
+  RS.ChangeLoadingImage.createStyleSheet();
 
 })();
