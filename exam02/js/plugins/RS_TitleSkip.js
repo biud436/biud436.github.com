@@ -25,6 +25,8 @@ Imported.RS_TitleSkip = true;
 
           var count = (this._loadingCount - 20) / 30;
           var alpha = count.clamp(0, 1);
+          var per = Math.floor(count * 25).clamp(0, 100);
+          var text = String('Loading ' + per + "%");
           context.save();
           context.globalAlpha = alpha;
           //context.drawImage(this._loadingImage, dx, dy);
@@ -35,10 +37,11 @@ Imported.RS_TitleSkip = true;
           context.strokeStyle = 'black';
           context.lineWidth = 1;
           context.lineJoin = 'round';
-          context.strokeText(String('Loading ' + count + "%"), dx, dy, 200);
+
+          context.strokeText(text, dx, dy, 200);
 
           context.fillStyle = 'white';
-          context.fillText(String('Loading ' + count + "%"), dx, dy, 200);
+          context.fillText(text, dx, dy, 200);
 
           context.restore();
       }
