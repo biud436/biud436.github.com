@@ -35,10 +35,10 @@ Imported.RS_TitleSkip = true;
           context.strokeStyle = 'black';
           context.lineWidth = 1;
           context.lineJoin = 'round';
-          context.strokeText(String('Loading ' + count + "%"), 0, 0, 200);
+          context.strokeText(String('Loading ' + count + "%"), dx, dy, 200);
 
           context.fillStyle = 'white';
-          context.fillText(String('Loading ' + count + "%"), 0, 0, 200);
+          context.fillText(String('Loading ' + count + "%"), dx, dy, 200);
 
           context.restore();
       }
