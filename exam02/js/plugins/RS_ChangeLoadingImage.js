@@ -135,7 +135,7 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
           // var per = Math.floor(count * 25).clamp(0, 100);
           // var text = String('Loading ' + per + "%");
 
-          RS.ChangeLoadingImage.drawLoadingImage(context, dx, dy, count);
+          RS.ChangeLoadingImage.drawLoadingImage.call(this, context, dx, dy, count);
 
       }
   };
