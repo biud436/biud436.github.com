@@ -57,7 +57,7 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
 
   RS.ChangeLoadingImage.drawLoadingImage = function(context, dx, dy, count) {
     context.save();
-    context.globalAlpha = 1;
+    //context.globalAlpha = 1;
     context.drawImage(this._loadingImageBack, dx, dy);
     context.drawImage(this._loadingImageGauge, dx, dy);
     context.drawImage(this._loadingImageText, dx, dy);
