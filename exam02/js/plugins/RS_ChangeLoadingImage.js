@@ -136,7 +136,7 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
           context.drawImage(this._loadingImageText, dx, dy);
 
           context.restore();
-\
+
       }
   };
 
