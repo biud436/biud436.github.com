@@ -27,14 +27,17 @@ Imported.RS_TitleSkip = true;
           var alpha = count.clamp(0, 1);
           context.save();
           context.globalAlpha = alpha;
-          context.drawImage(this._loadingImage, dx, dy);
+          //context.drawImage(this._loadingImage, dx, dy);
 
-          context.strokeStyle = 'white';
+          context.font = "30px Arial";
+          context.textBaseline = 'alphabetic';
+
+          context.strokeStyle = 'black';
           context.lineWidth = 1;
           context.lineJoin = 'round';
           context.strokeText(String('Loading ' + count + "%"), 0, 0, 200);
 
-          context.fillStyle = 'gray';
+          context.fillStyle = 'white';
           context.fillText(String('Loading ' + count + "%"), 0, 0, 200);
 
           context.restore();
