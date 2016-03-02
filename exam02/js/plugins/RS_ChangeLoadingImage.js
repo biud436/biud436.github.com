@@ -56,13 +56,7 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
   }
 
   RS.ChangeLoadingImage.drawLoadingImage = function(context, dx, dy, count) {
-    context.save();
-    //context.globalAlpha = 1;
-    context.drawImage(this._loadingImageBack, dx, dy);
-    context.drawImage(this._loadingImageGauge, dx, dy);
-    context.drawImage(this._loadingImageText, dx, dy);
 
-    context.restore();
   }
 
   RS.ChangeLoadingImage.drawText = function(context, text, dx, dy) {
@@ -135,8 +129,14 @@ RS.ChangeLoadingImage = RS.ChangeLoadingImage || {};
           // var per = Math.floor(count * 25).clamp(0, 100);
           // var text = String('Loading ' + per + "%");
 
-          RS.ChangeLoadingImage.drawLoadingImage.call(this, context, dx, dy, count);
+          context.save();
+          //context.globalAlpha = 1;
+          context.drawImage(this._loadingImageBack, dx, dy);
+          context.drawImage(this._loadingImageGauge, 0, 0);
+          context.drawImage(this._loadingImageText, dx, dy);
 
+          context.restore();
+\
       }
   };
 
