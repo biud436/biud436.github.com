@@ -20,12 +20,15 @@ Imported.RS_TitleSkip = true;
           var context = this._upperCanvas.getContext('2d');
           var dx = (this._width - this._loadingImage.width) / 2;
           var dy = (this._height - this._loadingImage.height) / 2;
+
+          console.log(this._loadingCount);
+
           var count = (this._loadingCount - 20) / 30;
           var alpha = count.clamp(0, 1);
           context.save();
           context.globalAlpha = alpha;
           context.drawImage(this._loadingImage, dx, dy);
-          
+
           context.strokeStyle = 'white';
           context.lineWidth = 1;
           context.lineJoin = 'round';
