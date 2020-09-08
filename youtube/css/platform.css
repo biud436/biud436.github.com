@@ -2,10 +2,20 @@
 
 @media screen and (orientation: portrait) and (max-width:480px) {
 
+    :root {
+        --width: calc(32px * 3);
+    }
+
+    .container_12 {
+        width: 100vw;
+    }
+
     .header {
-        width:100%;
+        width: 100%;
         height: 64px;
         position: relative;
+        display: flex;
+        justify-content: space-around;
     }
 
     .header #menu {
@@ -18,8 +28,7 @@
     } 
 
     .header fieldset {
-        width: 0px;
-        height: 0px;
+        width: 120px;
     }
 
     .header #upload-video {
@@ -34,39 +43,233 @@
         display: none;
     }
 
+    .header #youtube-search {
+        display: none;
+    }
+
+    .header fieldset {
+        border: 1px solid #ccc;
+        background: none;
+        box-shadow: none;
+        display: none;
+    }
+
+    .header fieldset > input[type="button"] {
+        width: 40%;
+    }
+
     .header #login {
-        display: inline-block;
+        width: 48px;
+        font-size: 1em;
+        border: none;
+        fill: black;
+        filter:grayscale(100%);
+    }
+
+    .header #login ::after {
+        content: url("../images/youtube-search-icon.png");
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        top: 0;
+        right: 3em;
+    }
+
+    .header button {
+        width: 16px;
+        height: 32px;
+    }    
+
+    .side-items {
+        position:fixed;
+        z-index: 500;
+        width: 100%;
+        height: 10%;
+        left:0;
+        bottom: 0;
+        padding-bottom: 1em;
+        background: rgb(255,255,255,0.9);
+        overflow: hidden;
+    }
+
+    .side-items ul {
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+    }
+
+    .side-items ul li:nth-of-type(3) {
+        display: none;
+    }
+
+    .side-items svg {
+        width: 40%;
+        height: 40%;
+        fill: rgba(0, 0, 0, 0.9);
+    }
+
+    .contents {
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+    }
+
+    .contents .block {
+        height: auto;
+    }
+
+}
+
+@media screen and (orientation: landscape) and (max-width:768px) {
+
+    :root {
+        --width: calc(32px * 4);
+    }
+
+    .container_12 {
+        width: 98vw;
+        overflow-x:hidden;
+    }
+
+    .header {
+        width: 100%;
+        height: 64px;
+        position: relative;
+        display: grid;
+        grid-template-columns: 0fr 0fr 10fr 0fr 0fr 0fr 1fr;
+    }
+
+    .header #menu {
+        display: none;
+    }
+
+    .header #search-button {   
+        border: none;
+        border-radius: 0px;
+    } 
+
+    .header fieldset {
+        width: 100%;
+    }
+
+    .header #upload-video {
+        display: none;
+    }
+
+    .header #youtube-app {
+        display: none;
+    }
+
+    .header #setting {
+        display: none;
     }
 
     .header #youtube-search {
         display: none;
     }
 
+    .header fieldset {
+        border: 1px solid #ccc;
+        background: none;
+        box-shadow: none;
+    }
+
+    .header fieldset > input[type="button"] {
+        width: 10%;
+    }
+
+    .header #login {
+        width: 48px;
+        font-size: 1em;
+        border: none;
+        fill: black;
+        filter:grayscale(100%);
+    }    
+
+    .header button {
+        width: 16px;
+        height: 32px;
+    }    
+
     .side-items {
+        position:fixed;
+        z-index: 500;
+        width: 100%;
+        height: auto;
+        left: 0;
+        bottom: 0;
+        padding-bottom: 1em;
+        background: rgb(255,255,255,0.9);
+        overflow: hidden;
+    }
+
+    .side-items ul {
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+    }
+
+    .side-items li {
+        height: 30%;
+    }
+
+    .side-items p {
+        font-size: 1.5em;
+    }
+
+    .side-items ul li:nth-of-type(3) {
         display: none;
+    }
+
+    .side-items svg {
+        width: 20%;
+        height: 20%;
+        fill: rgba(0, 0, 0, 0.9);
     }
 
     .contents {
         width: 100%;
-        padding: 0;
-        margin: 0;
     }
 
     .contents .block {
         width: 100%;
-        height: 320px;
-    }
+        height: 50%;
+        margin-left: 0;
+        margin-right: 0;
+        flex: 1 1 100%;
+        justify-content: flex-start;
+        height: auto;
+        overflow:hidden;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #ccc;
+    }    
 
     .contents .video {
-        width: 100%;
+        width: 40%;
+        height: 70%;
+        margin:0;
+        padding: 0;
+        float: left;
     }
 
-    .contents .video img {
-        width: 100%;
+    .contents .description {
+        width: 60%;
+        height: 100%;
+        float: left;
+        display: flex;
+        flex-flow: column nowrap;
+        overflow: hidden;
     }
 
-    .content .description {
-        width: 100%;
+    .contents .video-db {
+        width: 80%;
+        padding-left: 1em;
+        line-height: 1em;
     }
 
+    .contents .video-db p {
+        display: inline;
+    }
+
+    .contents .circle-clipper {
+        order: 3;
+        padding-left: 1.4em;
+    }
 }

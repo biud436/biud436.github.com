@@ -7,10 +7,16 @@
 
 /* 컨테이너를 화면 왼쪽에 정렬한다. */
 .container_12 {
-    width: auto;
+    width: 100%;
     height: auto;
     min-width:100%;
-    min-height:100%;
+    min-height:100%; 
+}
+
+.contents {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 /**
@@ -30,11 +36,13 @@
     --video-title-color: #030303;
     --button-color: #f8f8f8;
     --button-hover-color: #f3f3f3;
+    --width: calc(32px * 2.5);
 }
 
 .header {
-    width: 940px;
+    width: 100vw;
     height: 40px;
+    margin: 0;
     margin-top: 0px;
     margin-bottom: 10px;
     padding: 0;
@@ -42,6 +50,13 @@
     cursor: pointer;
     background: white;
     opacity: 0.8;
+    display: grid;
+    grid-template-columns: 1fr 1fr 10fr 1fr 1fr 1fr 2fr;
+    grid-column-gap: 0.5em;
+}
+
+.header #menu {
+    padding-left: 1em;
 }
 
 .header #youtube-logo {
@@ -51,19 +66,19 @@
 }
 
 .header fieldset {
+    width: 60%;
     height: 29px;
     padding:0;
-    margin:0;          
-    margin-top: 4px;
+    margin:0 auto;          
+    margin-top: 4px; 
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
     border-width: 0px;
-    width: 100%;
     border-color: var(--text-color1);
     position: relative;
-    box-shadow: 0px 0px 1px 1px var(--text-color1);    
+    box-shadow: 0px 0px 1px 1px var(--text-color1);     
 }
 
 .header fieldset > input[type="text"] {
@@ -84,7 +99,7 @@
 }
 
 .header fieldset > input[type="button"] {
-    width: 40px;
+    width: calc(10% + 2px);
     height: 29px;
     padding:0;
     margin:0;    
@@ -238,11 +253,11 @@
 /* 상단 헤더 버튼을 클릭하면 마우스 롤오버 효과 */
 .header button:active button-overlay::after {
     position: absolute;
-    width: 32px;
+    width: 100%;
     height: 32px;
-    left:0;
+    left: 0;
     top:0;
-    content: " ";
+    content: "";
     clip-path: circle(50% at center center);
     background: #ececec;
     opacity: 0.8;
@@ -282,8 +297,8 @@
 
 /* 왼쪽 */
 .side-items {
-    position: relative;
-    height: auto;
+    width: var(--width);
+    float: left;
 }
 
 .side-items ul {
@@ -291,13 +306,12 @@
 }
 
 .side-items li {
-    background-image: var(--ytb-item-sheet);
-    height: 60px;
-    line-height: 50px;
+    width: 100%;
+    height: 100%;
+    line-height: 2em;
     margin: 0;
     padding: 0;
     text-overflow: clip;
-    background-position-x: -0.3em;
     cursor: pointer;
     position: relative;
     margin-bottom: 3px;
@@ -306,55 +320,57 @@
 
 /* 사이드 바에서 홈, 시청 기록, 보관함, 구독 아이콘에 마우스 오버 시 효과 */
 .side-items li:hover ::before{
-    content: " ";
+    content: "";
     position: absolute;
-    width: 80px;
-    height: 60px;
+    width: 100%;
+    height: calc((var(--width) * 1.2) / 2);
     left: -10px;
     top: 0;
     background: rgba(0,0,0,0.1);
 }
 
-.side-items #home {
-    background-position: 0 0;
-}     
+.side-items a {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;   
+}
 
-.side-items #trending {
-    background-position: 0 calc((24px * 2) + 24px);
-}        
+.ytb-item-name {     
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 0.5em;
+    line-height: 1em;
+}
 
-.side-items #subscriptions {
-    background-position: 0 calc((24px * 5) + 24px);
-}        
+.side-items svg {
+    width: 50%;
+    height: 50%;
+    fill: rgba(2,2,2,0.35);
+}
 
-.side-items #library {
-    background-position: 0 calc((24px * 8) + 24px);
-}        
-
-/* 동영상 */
-.contents {
-    padding-top: 5px;
+/* 동영상 영역 */
+.contents {    
+    padding-top: 4px;
     padding-left: 5px;
     padding-right: 5px;
-    margin: 0 auto;
     height: max-content;
-    /* background: darkslategrey; */
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .contents .block {
-    min-width: calc(860px / 4 - 20px);
+    flex: 1 1 20%;
     height: 250px;
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    /* background: gray; */
 }
 
 .contents .video {
-    width: 100%;
+    width: auto;
     height: 60%;
-    border: 1px solid #ccc;
     box-sizing: border-box;
     position: relative;
 }
@@ -367,13 +383,16 @@
 @keyframes scale-x2 {
     from {
         width: 32px;
+        opacity: 0.7;
     }
 
     to {
-        width: 128px;
+        width: 120px;
+        opacity: 0.9;
     }
 }
 
+/* 동영상에 마우스를 올려놓을 때, 가상 요소 아이콘 생성 */
 .contents .block .video:hover > * ~ youtube-overlay::after {
     content: attr(value);
     width: 28px;
@@ -383,13 +402,14 @@
     text-align: center;
     line-height: 32px;
     right: 0;
-    top: 0;
+    top: 1ch;
     display: block;
     border-radius: 2px;
     z-index: 8;
-    opacity: 0.6;
+    opacity: 0.9;
     background-repeat: no-repeat;           
     overflow:hidden;
+    margin-right: 0.5em;
     text-overflow: ellipsis;
     white-space: nowrap;
     background: #030303;              
@@ -397,12 +417,11 @@
     background-image: url("../images/overlaysheet.png");
     background-repeat: no-repeat;
     text-indent: 28px;
-    text-align: right;
-
 }
 
 .contents .block .video:hover > * ~ youtube-overlay:nth-of-type(2)::after {
     background-position: 0 100%;
+    margin-top: 0.5em;
 }
 
 .contents .block .video > * ~ youtube-overlay:nth-of-type(3)::after {
@@ -418,7 +437,7 @@
     display: block;
     border-radius: 2px;
     z-index: 8;
-    opacity: 0.6;
+    opacity: 0.8;
     overflow:hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -437,25 +456,36 @@
     }
 }
 
-/* 썸네일 이미지에 마우스를 올려 놓았을 떄 */
+/* 
+ * 썸네일의 우측 상단 버튼에 마우스를 올려놓았을 때의 가상 요소
+ */
 .contents .block .video:hover > * ~ youtube-overlay:not(:nth-of-type(3)):hover::after {
     background: #030303;       
     animation-name: scale-x2;
     animation-duration: .4s;
     animation-timing-function: ease-in;     
     width: max-content;
+    box-sizing: border-box;
     background-image: url("../images/overlaysheet.png");
     background-repeat: no-repeat;
     background-position: top right;
-    text-align: left;
-    padding-right: 28px;
+    text-align: start;
+    text-overflow: clip;
+    direction: rtl;
+    overflow: hidden;
+    font-size: 0.8em;
+    color: #fff;
+    padding-left: 0;
     margin-left:0;
 }
 
+/* 목록에 추가에 마우스 오버 */
 .contents .block .video:hover > * ~ youtube-overlay:nth-of-type(2):hover::after {
     background-position: bottom right;
+    margin-top: 0.5em;
 }
 
+/* 시간 바 사라지기 */
 .contents .block .video:hover > * ~ youtube-overlay:nth-of-type(3)::after {
     opacity: 0;
     animation: fade_out .4s ease-in;
@@ -473,12 +503,12 @@
 .contents .block .video > * ~ youtube-overlay:nth-of-type(3):after {
     width: max-content;
     height: max-content;
-    font-weight: bold;
-    opacity: 0.8;
+    opacity: 1.0;
     top: inherit;
-    font-size: 0.8em;
     bottom: 0;
-    margin: 2px;
+    font-size: 0.8em;
+    color: #fff;
+    margin: 1em;
 }
 
 .description {
@@ -510,18 +540,17 @@
     position: relative;
     min-width: calc(860px / 4 - 20px);
     height: 96px;
+    display: flex;
 }
 
 .video-db {
     width: 150px;
     height: 64px;
     margin-left: 2px;
-    padding-right: 10px;
-    position: absolute;
-    right: 0;
-    top: 10px;
+    padding-top: 10px;
     line-height: 1em;    
     cursor: pointer;    
+    flex-basis: 100%;
 }
 
 .video-db:hover::before {
