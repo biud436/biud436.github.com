@@ -11,7 +11,7 @@
     }
 
     .header {
-        width: 100%;
+        width: 98%;
         height: 64px;
         position: relative;
         display: flex;
@@ -132,7 +132,7 @@
     }
 
     .header {
-        width: 100%;
+        width: 98%;
         height: 64px;
         position: relative;
         display: grid;
