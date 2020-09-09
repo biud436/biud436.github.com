@@ -10,7 +10,7 @@ const config = {
     extraDataCount : 8,
     locale: {
         "ko": {
-            DOCUMENT_TITLE: "유튜브 클론",
+            DOCUMENT_TITLE: "유튜브 메인",
         },
         "en": {
             DOCUMENT_TITLE: "YouTube Clone",
@@ -142,13 +142,25 @@ class App {
         });
     }
 
+    initWithFontAwesome() {
+        const script = document.createElement('script');
+        script.src = "https://kit.fontawesome.com/a99df0f94f.js";
+        script.crossOrigin = "anonymous";
+        document.getElementsByTagName('head')[0].appendChild(script);        
+    }
+
     async start() {
         this.initMembers();
         this.initWithYouTubeLogo();
         this.initWithSearchButton();
         this.isValidInternetConnection();
         this.initWithThumnailAll();
-        this.initWithMouseWheel();        
+        this.initWithMouseWheel();  
+        this.initWithFontAwesome();
+
+        this._renderer = new SideBarRenderer();
+        this._renderer.render();
+
     }
 
     addButtonController() {
