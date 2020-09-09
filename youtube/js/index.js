@@ -55,16 +55,14 @@ class DocumentComponent extends DefaultComponent {
 
 class App {
     
-    constructor() {
+    initMembers() {
         this._components = [];
         this._components.push(new DocumentComponent());
 
         for(let component of this._components) {
             component.start();
-        }
-    }
+        }        
 
-    initMembers() {
         this._scrollY = 0;
         this._youTubeData = [];
 
