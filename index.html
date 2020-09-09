@@ -1,15 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            width: max-content;
+            height: 100%;
+            margin: 0 auto;
+            padding: 3em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
+    <div>
+        <p><span>3</span>초 후에 타겟 사이트로 리다이렉션 됩니다.</p>
+    </div>
     <script>
+        let now = performance.now();
         window.onload = function() {
-            location.href = "./youtube/index.html";
-        };
+            loop();            
+        };        
+        function loop(t) {
+            if(performance.now() - now >= 1000) {
+                const value = parseInt(document.querySelector("div p span").textContent) - 1;
+                document.querySelector("div p span").textContent = value;
+                if(value <= 0) {
+                    location.href = "./youtube/index.html";
+                }
+                now = performance.now();
+            }
+            window.requestAnimationFrame(loop);
+        }
     </script>
 </body>
 </html>
