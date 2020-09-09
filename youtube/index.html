@@ -4,41 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/main.css">
-    <title>유튜브</title>
+    <title></title>
 </head>
 <body>
     <div class="container_12">
-        <div class="header grid_12">
-            <div class="header-btn grid_1 alpha"><button id="menu">
+        <div class="header">
+            <div class="header-btn alpha"><button id="menu">
                 <button-overlay></button-overlay>
             </button></div>
-            <div class="header-btn grid_2"><img id="youtube-logo" src="./images/ytb-logo.png" alt="" title="유튜브 홈" srcset=""></div>
-            <div class="header-btn grid_4">
+            <div class="header-btn">
+                <img id="youtube-logo" src="./images/ytb-logo.png" alt="" title="유튜브 홈" srcset="">
+            </div>
+            <div class="header-btn">
                 <fieldset id="input-field">
                     <input type="text" name="" id="youtube-search" placeholder="검색">
                     <input type="button" id="search-button">
                     <tooltip value="검색"></tooltip>                    
                 </fieldset>
             </div>
-            <div class="header-btn grid_1 prefix_1"><button id="upload-video">
+            <div class="header-btn">
+                <button id="upload-video">
                 <button-overlay></button-overlay>
                 <tooltip value="만들기"></tooltip>
             </button></div>
-            <div class="header-btn grid_1"><button id="youtube-app">
+            <div class="header-btn">
+                <button id="youtube-app">
                 <button-overlay></button-overlay>
                 <tooltip value="YouTube 앱"></tooltip>
             </button></div>
-            <div class="header-btn grid_1"><button id="setting">
+            <div class="header-btn">
+                <button id="setting">
                 <button-overlay></button-overlay>
                 <tooltip value="설정"></tooltip>
             </button></div>
-            <div class="header-btn grid_1 omega"><button id="login">로그인
+            <div class="header-btn "><button id="login">로그인
                 <button-overlay></button-overlay>
             </button></div>
         </div>
         <div class="clear"></div>
-        <div class="side-items grid_1">
-            <ul class="grid_1 alpha omega">
+        <div class="side-items">
+            <ul>
                 <li id="home">
                     <a href="">
                         <svg viewBox="0 0 24 24" fill=""><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
@@ -75,16 +80,16 @@
                 </li>
             </ul>
         </div>
-        <div class="grid_11 contents">
-            <div class="grid_2 alpha block">
-                <div class="grid_2 alpha omega video">
+        <div class="contents">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -93,15 +98,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 block">
-                <div class="grid_2 alpha omega video">
+            <div class=" block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -110,15 +115,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -127,15 +132,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 omega block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -144,15 +149,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 alpha block">
-                <div class="grid_2 alpha omega video">
+            <div class="alpha block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -161,15 +166,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -178,15 +183,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -195,15 +200,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 omega block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -212,15 +217,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 alpha block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -229,15 +234,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -246,15 +251,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>
@@ -263,15 +268,15 @@
                     </div>                    
                 </div>
             </div>                                 
-            <div class="grid_2 omega block">
-                <div class="grid_2 alpha omega video">
+            <div class="block">
+                <div class="video">
                     <a href=""><img src="https://dummyimage.com/16:9x720/" alt="준비중" onclick="javascript:playVideo"></a>
                     <youtube-overlay value="나중에 보기"></youtube-overlay>
                     <youtube-overlay value="목록에 추가"></youtube-overlay>
                     <youtube-overlay id="lengthText" value="00:00"></youtube-overlay>                    
                 </div>
                 <div class="clear"></div>                  
-                <div class="grid_2 alpha omega description">
+                <div class="description">
                     <div class="circle-clipper left"><img id="avatar" src="./images/unnamed.jpg" alt=""></div>
                     <div class="video-db left">
                         <a href="" id="video-title">동영상 명</a>

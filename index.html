@@ -25,10 +25,28 @@
         <p><span>3</span>초 후에 타겟 사이트로 리다이렉션 됩니다.</p>
     </div>
     <script>
+        const config = {
+            locale: {
+                "ko": {
+                    MESSAGE: "<p><span>3</span>초 후에 타겟 사이트로 리다이렉션 됩니다.</p>",
+                },
+                "en": {
+                    MESSAGE: "<p>Notice that it will be going to move to target site after <span>3</span>seconds</p>",
+                }
+            }
+        }
+
         let now = performance.now();
         window.onload = function() {
-            loop();            
+            const container = document.querySelector("div");
+            const langCode = navigator.language.slice(0, 2);
+            const data = config.locale[langCode]
+
+            container.innerHTML = data.MESSAGE;
+
+            loop();    
         };        
+
         function loop(t) {
             if(performance.now() - now >= 1000) {
                 const value = parseInt(document.querySelector("div p span").textContent) - 1;
@@ -40,6 +58,7 @@
             }
             window.requestAnimationFrame(loop);
         }
+        
     </script>
 </body>
 </html>

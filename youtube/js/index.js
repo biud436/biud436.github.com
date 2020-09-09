@@ -5,68 +5,120 @@
 
 "use strict";
 
-/**
- * 유튜브 데이터 API 할당량이 막히면 안되므로 적당히 불러와야 한다.
- */
 const config = {
     maxCount: 40, 
     extraDataCount : 8,
+    locale: {
+        "ko": {
+            DOCUMENT_TITLE: "유튜브 클론",
+        },
+        "en": {
+            DOCUMENT_TITLE: "YouTube Clone",
+        }
+    },
+    apiKey: `AIzaSyBxFnv8nYOIBd5V1ZQ_-FqrlnlruYDeIjw`
+}
+
+class DefaultComponent {
+    constructor() {
+        this.initMembers();        
+    }
+
+    initMembers() {
+
+    }
+
+    start() {
+
+    }
+}
+
+class DocumentComponent extends DefaultComponent {
+
+    initMembers() {
+        this._langCode = navigator.language.slice(0, 2); 
+    }
+
+    changeTitle() {
+       
+        const langCode = this._langCode;
+        const data = config.locale[langCode];
+        const defaultTitle = config.locale["en"].DOCUMENT_TITLE;
+
+        document.title = (data) ? data.DOCUMENT_TITLE : defaultTitle;
+    }
+
+    start() {
+        this.changeTitle();
+    }
 }
 
 class App {
-    async start() {
-        this.initMembers();
+    
+    constructor() {
+        this._components = [];
+        this._components.push(new DocumentComponent());
 
+        for(let component of this._components) {
+            component.start();
+        }
+    }
+
+    initMembers() {
+        this._scrollY = 0;
+        this._youTubeData = [];
+
+        App.Instance = this;
+
+        this._timer = performance.now();
+        this._redValue = 255;
+        this._state = "none";
+        this._prevScrollY = 0;
+        this._maxItems = 0;
+        this._currentNumber = 0;
+
+        this.isNeededCrawling();
+
+        this.downloadExtraData().then(() => {});
+
+        this.addButtonController();
+    }
+
+    /**
+     * This method checks whether the crawling is needed.
+     */
+    isNeededCrawling() {
+        this._ytCrawlingDate = new Date(ytCrawlingDate);
+        this._neededCrawling = false;
+        if(new Date().getDay() - this._ytCrawlingDate.getDay() >= 1) {
+            this._neededCrawling = true;
+        }   
+
+        return this._neededCrawling;
+    }
+
+    initWithYouTubeLogo() {
         const home = document.getElementById("youtube-logo");
         home.addEventListener("click", () => {
             location.reload();
         });
+    }
+
+    initWithSearchButton() {
         const search = document.querySelector("#search-button");
         search.addEventListener("click", this.search.bind(this), false);
+    }
 
-        // 인터넷 연결 여부 체크
-        const asyncProc = new Promise((resolve, reject) => {
+    isValidInternetConnection() {
+        return new Promise((resolve, reject) => {
             const virtualElem = document.createElement("img");
             virtualElem.src = thumbnailData[0];
             virtualElem.onload = resolve;
             virtualElem.onerror = reject;
         })
+    }
 
-        await asyncProc.then((res) => {
-            // 인터넷에 연결이 되었다.
-            if (!window.ytInitialData) {
-                this.createThumbnail();
-            } else {
-                this.createThumbnail2();
-            }
-
-            // if(this._neededCrawling) {
-            //     const root = document.querySelector(".contents");      
-            //     for(let i = 0; i < root.childElementCount; i++) {
-            //         const child = root.children[i];
-            //         const imgElem = child.querySelector("img");
-            //         const data = this._youTubeData[i];
-            //         imgElem.src = data.thumbnail;
-            //         imgElem.onclick = () => {
-            //             location.href = data.videoId;
-            //         }
-                    
-            //         child.querySelector("a").href = data.videoId;
-            //         child.querySelector("#avatar").src = data.avatar;
-            //         child.querySelector("#video-title").href = data.videoId;
-            //         child.querySelector("#video-title").innerText = data.title;
-            //         child.querySelector("#video-title").title = data.title;
-            //         child.querySelector("#video-subscriber").innerText = data.channelName;
-            //         child.querySelector("#video-view-count").innerText = data.publishedTimeText + " " + data.shortViewCountText;                
-            //     }          
-            // }  
-
-        }).catch(err => {
-            // 인터넷에 연결되지 않았다.
-            this.createThumbnail();
-        });
-
-
+    initWithMouseWheel() {
         if(this.isMobile()) {
             window.addEventListener("scroll", ev => {
                 this.updateScroll(ev.deltaY);
@@ -77,39 +129,30 @@ class App {
             window.addEventListener("wheel", ev => {
                 this.updateScroll(ev.deltaY);
             }, false);      
-        }
+        }        
     }
 
-    initMembers() {
-        this._scrollY = 0;
-        this._youTubeData = [];
-
-        // 인스턴스 저장
-        App.Instance = this;
-
-        this._timer = performance.now();
-        this._redValue = 255;
-        this._state = "none";
-        this._prevScrollY = 0;
-        this._maxItems = 0;
-        this._currentNumber = 0;
-
-        // 크롤링이 필요한 지 여부 확인
-        this._ytCrawlingDate = new Date(ytCrawlingDate);
-        this._neededCrawling = false;
-        if(new Date().getDay() - this._ytCrawlingDate.getDay() >= 1) {
-            this._neededCrawling = true;
-        }   
-
-        this.downloadExtraData().then(() => {
+    async initWithThumnailAll() {
+        await this.isValidInternetConnection().then((res) => {
+            if (!window.ytInitialData) {
+                this.createThumbnail();
+            } else {
+                this.createThumbnail2();
+            }
+        }).catch(err => {
+            this.createThumbnail();
         });
-
-        this.addButtonController();
     }
 
-    /**
-     * .... 걍 자바스크립트로 처리하자....
-     */
+    async start() {
+        this.initMembers();
+        this.initWithYouTubeLogo();
+        this.initWithSearchButton();
+        this.isValidInternetConnection();
+        this.initWithThumnailAll();
+        this.initWithMouseWheel();        
+    }
+
     addButtonController() {
         const items = document.querySelectorAll(".side-items li");
         const checked = (elem) => {
@@ -140,7 +183,7 @@ class App {
             // 유튜브 API 키
             const xhr = new XMLHttpRequest();
             const maxCount = extraDataCount || config.maxCount;
-            const myYouTubeKey = `AIzaSyBxFnv8nYOIBd5V1ZQ_-FqrlnlruYDeIjw`;
+            const myYouTubeKey = config.apiKey;
             const url = [
                 `https://www.googleapis.com/youtube/v3/videos?`,
                 `part=snippet&part=contentDetails&part=statistics&`,
@@ -223,7 +266,7 @@ class App {
                     const details = data.contentDetails;
                     const statistics = data.statistics;
                     
-                    // 재생 시간
+                    // 재생 시간을 두 자릿수로 맞춘다.
                     let lengthText = details.duration.replace("PT", "").replace("M", ":").replace("S", "");
                     lengthText = lengthText.split(":").map(t => {
                         return t.padStart(2, "0");
