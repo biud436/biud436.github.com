@@ -250,6 +250,17 @@
     }
 }
 
+@keyframes out {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+
 /* 상단 헤더 버튼을 클릭하면 마우스 롤오버 효과 */
 .header button:active button-overlay::after {
     position: absolute;
@@ -257,7 +268,7 @@
     height: 32px;
     left: 0;
     top:0;
-    content: "";
+    content: ":)";
     clip-path: circle(50% at center center);
     background: #ececec;
     opacity: 0.8;
@@ -266,6 +277,10 @@
     animation-name: zoom-in;
     animation-duration: 0.2s;
     animation-timing-function: ease-out;
+}
+
+.header #menu:active button-overlay::after {
+    left: calc(100% / 2);
 }
 
 .header button:hover tooltip::after {

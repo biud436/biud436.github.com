@@ -303,6 +303,9 @@ class App {
      * @param {Number}} value 
      */
     updateScroll(value) {
+        /**
+         * @type {HTMLDivElement}
+         */
         let item = document.querySelector(".header");
         this._scrollY += (value > 0) ? 1 : -1;
         this._scrollY = Math.min(Math.max(this._scrollY, -50), 50);
@@ -310,9 +313,21 @@ class App {
         if (window.scrollY > 1) {
             item.style.position = "fixed";
             item.style.zIndex = "100";
+
+            if(this.isMobile()) {
+                item.style.transition = "all .4s";
+                setTimeout(() => {
+                    if(this._state == "scroll") item.style.transform = "translateY(-100%)";
+                }, 400);
+            }
             this._state = "scroll";
         } else {
-            if (window.scrollY <= 2) {
+            if (window.scrollY <= 2) {       
+                if(this.isMobile()) {
+                    item.style.transform = "";
+                } else {
+                    item.style.transition = "";
+                }
                 item.style.position = "relative";
                 this._scrollY = 0;
                 this._state = "none";
@@ -575,35 +590,37 @@ class App {
         // 크롤러가 돌아가는 서버가 별도로 필요....
         // 서버가 없기 때문에 미리 저장해둔 데이터로 표시함.
         // 유튜브 데이터는 js/data.js에 있음.
-        if (this._currentNumber + 4 > this._maxItems) {
-            if (this._state !== "none") {
-                // const pElem = document.createElement("pre");
-                // pElem.style.width = "max-content";
-                // pElem.style.height = "max-content";
-                // pElem.textContent = [
-                //     "유튜브 인기 동영상 데이터를 더 이상 받아올 수 없습니다 (최대 50개)",
-                //     `(한계 : 최대 ${this._maxItems - 1}개)`
-                // ].join("\n");
-                // pElem.style.background = "#030303";
-                // pElem.style.textAlign = "center";
-                // pElem.style.color = "#fff";
-                // pElem.style.position = "fixed";
-                // pElem.style.padding = "1em";
-                // pElem.style.borderRadius = "15px";
-                // pElem.style.bottom = "15px";
-                // pElem.style.right = "0";
-                // pElem.style.animation = "fade_out .1s ease-in";
-                // pElem.style.animationPlayState = "playing";
-
-                // document.body.appendChild(pElem);
-
-                // setTimeout(() => {
-                //     document.body.removeChild(pElem);
-                // }, 200);
-            }
-
-            return;
-        }
+        if(!this.isMobile()) {
+            if (this._currentNumber + 4 > this._maxItems) {
+                if (this._state !== "none") {
+                    const pElem = document.createElement("pre");
+                    pElem.style.width = "max-content";
+                    pElem.style.height = "max-content";
+                    pElem.textContent = [
+                        "유튜브 인기 동영상 데이터를 더 이상 받아올 수 없습니다 (최대 50개)",
+                        `(한계 : 최대 ${this._maxItems - 1}개)`
+                    ].join("\n");
+                    pElem.style.background = "#030303";
+                    pElem.style.textAlign = "center";
+                    pElem.style.color = "#fff";
+                    pElem.style.position = "fixed";
+                    pElem.style.padding = "1em";
+                    pElem.style.borderRadius = "15px";
+                    pElem.style.bottom = "15px";
+                    pElem.style.right = "0";
+                    pElem.style.animation = "fade_out .1s ease-in";
+                    pElem.style.animationPlayState = "playing";
+    
+                    document.body.appendChild(pElem);
+    
+                    setTimeout(() => {
+                        document.body.removeChild(pElem);
+                    }, 200);
+                }
+    
+                return;
+            }            
+        }        
 
         // 다음 동영상 4개를 가져온다.
         for (let i = 0; i < 4; i++) {
