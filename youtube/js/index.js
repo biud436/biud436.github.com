@@ -70,6 +70,74 @@ class DocumentComponent extends DefaultComponent {
 }
 
 /**
+ * @class SideBarContainer
+ */
+class SideBarContainer extends DefaultComponent {
+
+    start() {
+        const width = (32 * 2.5) / window.innerWidth * 100;
+        const per = Math.round(width, 2);
+
+        const elem = document.querySelector(".side-items");
+
+        if(elem) {
+            elem.style.width = `${per}%`;
+        }
+    }
+}
+
+/**
+ * @class HeaderUIManager
+ * @description
+ * resize 이벤트가 호출되었을 때, 헤더의 폭에 따라 보여줄 버튼과 감출 버튼을 선택합니다.
+ */
+class HeaderUIManager extends DefaultComponent {
+
+    start() {
+        const lastX = window.innerWidth;
+        const items = [];
+        const rects = [];
+
+        const fieldSet = document.querySelector(".header div:nth-child(3)");
+        const rect = fieldSet.getBoundingClientRect();
+        const minX = rect.x;
+        const maxX = rect.right;
+
+        items.push(document.querySelector(".header div:nth-child(4)"));
+        items.push(document.querySelector(".header div:nth-child(5)"));
+        items.push(document.querySelector(".header div:nth-child(6)"));
+        items.push(document.querySelector(".header div:nth-child(7)"));
+    
+        let sum = 0;
+
+        items.forEach(i => {
+            const rect = i.getBoundingClientRect();
+            sum += rect.width;
+            rects.push(rect);
+        });
+
+        // 버튼이 겹친다면 제거한다.
+        let deltaWidth = 0;
+        items.forEach((e, i, a) => {
+            const w = rects[i].width;
+            deltaWidth += w;
+            e.style.position = "absolute";
+            e.style.right = (sum) - deltaWidth + "px";
+            e.style.paddingRight = w / 2 + "px";
+
+            const currentRect = e.getBoundingClientRect();
+
+            if(currentRect.x <= maxX) {
+                e.style.opacity = "0";
+            } else {
+                e.style.opacity = "1.0";
+            }
+        });
+    }
+
+}
+
+/**
  * @class App
  */
 class App {
@@ -77,10 +145,12 @@ class App {
     initMembers() {
         this._components = [];
         this._components.push(new DocumentComponent());
+        this._components.push(new SideBarContainer());
+        this._components.push(new HeaderUIManager());
 
         for(let component of this._components) {
             component.start();
-        }        
+        }                
 
         this._scrollY = 0;
         this._youTubeData = [];
@@ -103,6 +173,12 @@ class App {
         });
 
         this.addButtonController();
+
+        window.addEventListener("resize", () => {
+            for(let component of this._components) {
+                component.start();
+            }                          
+        }, false);
     }
 
     /**
