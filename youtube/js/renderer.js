@@ -83,7 +83,6 @@ class SideBarRenderer {
 
         // This calls a specific callback function after it has loading transparent image from the base64.
         await this.load().then(result => {
-            console.log(typeof(result));
             this._element.innerHTML = result;
         }).catch(err => {
             console.warn(err);
