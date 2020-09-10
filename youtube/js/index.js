@@ -3,6 +3,13 @@
  * @date 2020.09.05
  * @description
  * This script allows you to control the HTML Element on our website dynamically.
+ * 
+ * The video list consists as follows.
+ * 
+ * Static Crawling Data (20) 
+ * YouTube Trending Data(40)
+ * 
+ * The static crawling data supports the rich thumbnail, but there is available date that is only one day.
  */
 
 "use strict";
