@@ -1,6 +1,8 @@
 /**
- * @author 어진석
+ * @author Eo Jinseok
  * @date 2020.09.05
+ * @description
+ * This script allows you to control the HTML Element on our website dynamically.
  */
 
 "use strict";
