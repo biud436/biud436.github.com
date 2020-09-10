@@ -158,7 +158,7 @@ class App {
         this.initWithMouseWheel();  
         this.initWithFontAwesome();
 
-        this._renderer = new SideBarRenderer(this);
+        this._renderer = SideBarRenderer.GetInstance();
         this._renderer.render();
 
     }

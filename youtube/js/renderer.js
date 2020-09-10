@@ -69,6 +69,7 @@ class SideBarRenderer {
             return;
         }
 
+        // This calls a specific callback function after it has loading transparent image from the base64.
         const content = `
         <style>
             .fakeRichParentContainer {
@@ -213,6 +214,9 @@ class SideBarRenderer {
         
     }
 
+    /**
+     * it is possible to reuse SideBarRenderer throughout our website.
+     */
     static GetInstance() {
         if(!SideBarRenderer.Instance) {
             SideBarRenderer.Instance = new SideBarRenderer();
