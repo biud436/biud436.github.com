@@ -116,15 +116,18 @@ class HeaderUIManager extends DefaultComponent {
             rects.push(rect);
         });
 
+        const wishButtonRect = [64, 64, 64, 64 + 32];
+        const wishMarginRight = [64, 64, 64, 64];
+        const wishButtonSum = wishButtonRect.reduce((a, b) => a + b, 0)
+
         // 버튼이 겹친다면 제거한다.
         let deltaWidth = 0;
         items.forEach((e, i, a) => {
-            const w = rects[i].width;
+            const w = wishButtonRect[i];
             deltaWidth += w;
             e.style.position = "absolute";
             e.style.top = "0.5em";
-            e.style.right = (sum) - deltaWidth + "px";
-            e.style.paddingRight = w / 2 + "px";
+            e.style.right = (wishButtonSum) - deltaWidth + wishMarginRight[i] + "px";
 
             const currentRect = e.getBoundingClientRect();
 
