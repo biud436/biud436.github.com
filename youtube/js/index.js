@@ -28,6 +28,10 @@ const config = {
     apiKey: `AIzaSyBxFnv8nYOIBd5V1ZQ_-FqrlnlruYDeIjw`
 }
 
+/**
+ * @class DefaultComponent
+ * @description
+ */
 class DefaultComponent {
     constructor() {
         this.initMembers();        
@@ -42,6 +46,9 @@ class DefaultComponent {
     }
 }
 
+/**
+ * @class DocumentComponent
+ */
 class DocumentComponent extends DefaultComponent {
 
     initMembers() {
@@ -62,6 +69,9 @@ class DocumentComponent extends DefaultComponent {
     }
 }
 
+/**
+ * @class App
+ */
 class App {
     
     initMembers() {
@@ -86,7 +96,11 @@ class App {
 
         this.isNeededCrawling();
 
-        this.downloadExtraData().then(() => {});
+        this.downloadExtraData().then(() => {
+            if(this._neededCrawling) {
+                this.changeVideoGridData();
+            }
+        });
 
         this.addButtonController();
     }
@@ -141,12 +155,17 @@ class App {
 
     async initWithThumnailAll() {
         await this.isValidInternetConnection().then((res) => {
+            
             if (!window.ytInitialData) {
+                // 정적 크롤링 데이터가 없으면 아래 썸네일을 생성
                 this.createThumbnail();
             } else {
+                // 정적 크롤링 데이터가 있을 경우 아래 썸네일 생성
                 this.createThumbnail2();
             }
+
         }).catch(err => {
+            // 인터넷에 접속이 되어있지 않을 경우, 아래 썸네일 생성
             this.createThumbnail();
         });
     }
@@ -158,6 +177,14 @@ class App {
         document.getElementsByTagName('head')[0].appendChild(script);        
     }
 
+    /**
+     * 사이드바 메뉴를 동적으로 생성합니다.
+     */
+    initWithSIdeBarRenderer() {
+        this._renderer = SideBarRenderer.GetInstance();
+        this._renderer.render();
+    }
+
     async start() {
         this.initMembers();
         this.initWithYouTubeLogo();
@@ -166,12 +193,12 @@ class App {
         this.initWithThumnailAll();
         this.initWithMouseWheel();  
         this.initWithFontAwesome();
-
-        this._renderer = SideBarRenderer.GetInstance();
-        this._renderer.render();
-
+        this.initWithSIdeBarRenderer();
     }
 
+    /**
+     * 사이드바 버튼을 누르면 SVG 아이콘을 빨간색으로 변경합니다.
+     */
     addButtonController() {
         const items = document.querySelectorAll(".side-items li");
         const checked = (elem) => {
@@ -649,9 +676,6 @@ class App {
         if (!this._youTubeData) return;
         const root = document.querySelector(".contents");
 
-        // 크롤러가 돌아가는 서버가 별도로 필요....
-        // 서버가 없기 때문에 미리 저장해둔 데이터로 표시함.
-        // 유튜브 데이터는 js/data.js에 있음.
         if(!this.isMobile()) {
             if (this._currentNumber + 4 > this._maxItems) {
                 if (this._state !== "none") {
@@ -719,6 +743,48 @@ class App {
             node.querySelector("#video-subscriber").innerText = data.channelName;
             node.querySelector("#video-view-count").innerText = data.shortViewCountText + " " + data.publishedTimeText;
             root.appendChild(node);
+        }
+    }
+
+    changeVideoGridData() {
+        const root = document.querySelector(".contents");
+        const len = root.childElementCount;
+        
+        for (let i = 0; i < len; i++) {
+            const node = root.children[i];
+            const data = this._youTubeData[this._currentNumber++];
+
+            const imgElem = node.querySelector("img");
+            imgElem.src = data.thumbnail;
+            imgElem.title = data.videoId;
+            node.querySelector("a").href = data.videoId;
+
+            // 클릭했을 때
+            imgElem.onclick = () => {
+                location.href = data.videoId;
+            }
+
+            // 마우스 올려놓으면 멈춰있던 썸네일이 움직이는 처리
+            if (data.richThumbnail) {
+                imgElem.onmouseover = () => {
+                    imgElem.src = data.richThumbnail;
+                };
+                imgElem.onmouseleave = () => {
+                    imgElem.src = data.thumbnail;
+                }
+            } else {
+                imgElem.onmouseover = () => {
+                    imgElem.src = data.thumbnail;
+                };                
+            }
+
+            node.querySelector("#lengthText").setAttribute("value", data.lengthText);
+            node.querySelector("#avatar").src = data.avatar;
+            node.querySelector("#video-title").href = data.videoId;
+            node.querySelector("#video-title").innerText = data.title;
+            node.querySelector("#video-title").title = data.title;
+            node.querySelector("#video-subscriber").innerText = data.channelName;
+            node.querySelector("#video-view-count").innerText = data.shortViewCountText + " " + data.publishedTimeText;            
         }
     }
 
