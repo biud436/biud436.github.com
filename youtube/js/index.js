@@ -122,6 +122,7 @@ class HeaderUIManager extends DefaultComponent {
             const w = rects[i].width;
             deltaWidth += w;
             e.style.position = "absolute";
+            e.style.top = "0.5em";
             e.style.right = (sum) - deltaWidth + "px";
             e.style.paddingRight = w / 2 + "px";
 
