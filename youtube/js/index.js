@@ -538,6 +538,7 @@ class App {
                 if(document.body.scrollTop + document.body.clientHeight == document.body.scrollHeight) {
                     this.appendItems();
     
+                    // ! 유튜브 데이터 API 일일 사용량 초과로 인하여 주석 처리
                     // this.getData(config.extraDataCount);                    
                 }
             } else {
@@ -545,6 +546,7 @@ class App {
                 if (thod === document.documentElement.scrollTop) {
                     this.appendItems();
 
+                    // ! 유튜브 데이터 API 일일 사용량 초과로 인하여 주석 처리                    
                     // this.getData(config.extraDataCount);
                 }
             }
@@ -768,7 +770,8 @@ class App {
                     pElem.style.width = "max-content";
                     pElem.style.height = "max-content";
                     pElem.textContent = [
-                        "유튜브 인기 동영상 데이터를 더 이상 받아올 수 없습니다"
+                        "당분간 유튜브 인기 동영상 데이터를 받아올 수 없습니다",
+                        "(이거 넣었다가 데이터 API 사용량을 초과했습니다...)"
                     ].join("\n");
                     pElem.style.background = "#030303";
                     pElem.style.textAlign = "center";
