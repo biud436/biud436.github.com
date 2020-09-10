@@ -749,10 +749,11 @@ class App {
     changeVideoGridData() {
         const root = document.querySelector(".contents");
         const len = root.childElementCount;
+        const crawlingCount = 20;
         
         for (let i = 0; i < len; i++) {
             const node = root.children[i];
-            const data = this._youTubeData[this._currentNumber++];
+            const data = this._youTubeData[crawlingCount + this._currentNumber++];
 
             const imgElem = node.querySelector("img");
             imgElem.src = data.thumbnail;
@@ -775,7 +776,10 @@ class App {
             } else {
                 imgElem.onmouseover = () => {
                     imgElem.src = data.thumbnail;
-                };                
+                };   
+                imgElem.onmouseleave = () => {
+                    imgElem.src = data.thumbnail;
+                }                             
             }
 
             node.querySelector("#lengthText").setAttribute("value", data.lengthText);
