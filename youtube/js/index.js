@@ -683,8 +683,7 @@ class App {
                     pElem.style.width = "max-content";
                     pElem.style.height = "max-content";
                     pElem.textContent = [
-                        "유튜브 인기 동영상 데이터를 더 이상 받아올 수 없습니다 (최대 50개)",
-                        `(한계 : 최대 ${this._maxItems - 1}개)`
+                        "유튜브 인기 동영상 데이터를 더 이상 받아올 수 없습니다"
                     ].join("\n");
                     pElem.style.background = "#030303";
                     pElem.style.textAlign = "center";
@@ -750,10 +749,11 @@ class App {
         const root = document.querySelector(".contents");
         const len = root.childElementCount;
         const crawlingCount = 20;
+        this._currentNumber = crawlingCount;
         
         for (let i = 0; i < len; i++) {
             const node = root.children[i];
-            const data = this._youTubeData[crawlingCount + this._currentNumber++];
+            const data = this._youTubeData[this._currentNumber++];
 
             const imgElem = node.querySelector("img");
             imgElem.src = data.thumbnail;
