@@ -170,11 +170,16 @@ class App {
 
         this.isNeededCrawling();
 
-        this.downloadExtraData().then(() => {
-            if(this._neededCrawling) {
-                this.changeVideoGridData();
-            }
-        });
+        try {
+            this.downloadExtraData().then(() => {
+                if(this._neededCrawling) {
+                    this.changeVideoGridData();
+                }
+            });
+        } catch(e) {
+
+        }
+
 
         this.addButtonController();
 
@@ -260,7 +265,7 @@ class App {
     /**
      * 사이드바 메뉴를 동적으로 생성합니다.
      */
-    initWithSIdeBarRenderer() {
+    initWithSideBarRenderer() {
         this._renderer = SideBarRenderer.GetInstance();
         this._renderer.render();
     }
@@ -273,7 +278,7 @@ class App {
         this.initWithThumnailAll();
         this.initWithMouseWheel();  
         this.initWithFontAwesome();
-        this.initWithSIdeBarRenderer();
+        this.initWithSideBarRenderer();
     }
 
     /**
@@ -533,14 +538,14 @@ class App {
                 if(document.body.scrollTop + document.body.clientHeight == document.body.scrollHeight) {
                     this.appendItems();
     
-                    this.getData(config.extraDataCount);                    
+                    // this.getData(config.extraDataCount);                    
                 }
             } else {
                 const thod = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 if (thod === document.documentElement.scrollTop) {
                     this.appendItems();
 
-                    this.getData(config.extraDataCount);
+                    // this.getData(config.extraDataCount);
                 }
             }
         
