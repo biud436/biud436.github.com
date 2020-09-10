@@ -1,11 +1,18 @@
 /**
- * @author 어진석
+ * @author Eo Jinseok
  * @date 2020.09.09
+ * @description
+ * This renderer allows you to create YouTube Side Bar dynamically on the left of the screen.
+ * But you notice that it doesn't support for mobile devices.
  */
 class SideBarRenderer {
 
-    constructor() {
+    /**
+     * @type {App} parent
+     */
+    constructor(parent) {
         SideBarRenderer.Instance = this;
+        this._parent = parent;
         this.initWithCanvas();
         this.hide();
     }
@@ -32,6 +39,11 @@ class SideBarRenderer {
         }, false);
     }
 
+    isMobile() {
+        const r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini/i;
+        return !!navigator.userAgent.match(r);
+    }    
+
     hide() {
         this._element.style.display = "none";
         const side = document.querySelector(".side-items");
@@ -51,6 +63,12 @@ class SideBarRenderer {
     }
 
     render() {
+        if(this.isMobile()) {
+            console.log("You have executed in the mobile device such as iOS or Android platform");
+            console.log("SideBarRenderer doesn't suppport in mobile device.");
+            return;
+        }
+
         const content = `
         <style>
             .fakeRichParentContainer {
