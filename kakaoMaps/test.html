@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Contact us</title>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		color: #333;
+	}
+
+	a {
+		text-decoration: none;
+		color: #333;
+	}
+
+	header {
+		width: 960px;
+		height: 80px;
+		overflow: hidden;
+		margin: 0px auto;
+	}
+
+	header>h1 {
+		float: left;
+		margin-top: 20px;
+	}
+
+	header>nav {
+		float: right;
+		margin-top: 45px;
+	}
+
+	header nav a {
+		display: inline-block;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	main {
+		position: relative;
+		overflow: hidden;
+	}
+
+	main figure.banner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 960px;
+		height: 180px;
+		margin: 0 auto;
+		background: #69f;
+		margin-bottom: 20px;
+	}
+
+	main figure.banner>.figure_header {
+		width: 600px;
+		text-align: center;
+		color: white;
+	}
+
+	main figure.banner>.figure_header>h2 {
+		font-size: 2.5em;
+	}
+
+	main>section {
+		width: 960px;
+		margin: 0 auto;
+	}
+
+	main>section>article {
+		width: 66%;
+		overflow: hidden;
+		float: left;
+	}
+
+	main>section>article>#map {
+		width: 100%;
+		height: 500px;
+		background-color: #ccc;
+	}
+
+	main>section>article p {
+		margin-bottom: 20px;
+	}
+
+	main>section>aside {
+		float: right;
+		width: 34%;
+		box-sizing: border-box;
+		padding: 20px;
+		padding-top: 0;
+	}
+
+	fieldset {
+		width: 100%;
+		padding: 10px;
+		border: none;
+	}
+
+	legend {
+		font-size: 1.6em;
+		margin-bottom: 20px;
+	}
+
+	label {
+		display: block;
+	}
+
+	input,
+	textarea {
+		border: none;
+		background: #ddd;
+		padding: 10px;
+		resize: none;
+	}
+
+	label,
+	input,
+	textarea {
+		width: 90%;
+		margin-bottom: 10px;
+	}
+
+	button {
+		background: #fe6081;
+		color: white;
+		border: none;
+		padding: 10px 40px;
+	}
+
+	button:hover {
+		background: #ff80ab;
+	}	
+</style>
+</head>
+<body>
+	
+<header>
+	<h1>CSSLICK</h1>
+	<nav>
+		<span><a href="#">Home</a></span>
+		<span><a href="#">About</a></span>
+		<span><a href="#">Contact Us</a></span>
+	</nav>
+</header>
+<main> 
+	<figure class="banner">
+		<div class="figure_header">
+			<h2>Contact us</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur.</p>
+		</div>
+	</figure>	
+	<section>
+		<article>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi dolorem quisomnis nam quas sint assumenda id adipisci veritatis totam.</p>
+			<div id="map"><br>&nbsp;지도가 표시될 영역</div>
+		</article>
+		<aside>
+			<form action="">
+				<fieldset>
+					<legend>Send us Email</legend>
+					<div class="form-group">
+						<label for="name">Name</label>	
+						<input type="text" id="name" name="name">
+					</div>
+					<div class="form-group">
+						<label for="phone">Phone</label>
+						<input type="text" id="phone" name="phone">
+					</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email">
+					</div>
+					<div class="form-group">
+						<label for="msg">Message</label>
+						<textarea name="msg" id="msg" cols="30" rows="8"></textarea>
+					</div>
+					<div class="form-group">
+						<button>SEND</button>
+					</div>
+				</fieldset>
+			</form>
+		</aside>
+	</section>
+</main>
+	<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=57f13bd28ed3ed731017136a2a67ec40"></script>	
+    <script>
+	
+		var mapContainer = document.getElementById('map'), 
+			mapOption = { 
+				center: new kakao.maps.LatLng(37.545167, 126.676048), 
+				level: 3 
+			}; 
+
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+		if (navigator.geolocation) {
+				
+				navigator.geolocation.getCurrentPosition(function(position) {
+					
+					var lat = position.coords.latitude, // 위도
+						lon = position.coords.longitude; // 경도
+					
+					var locPosition = new kakao.maps.LatLng(lat, lon), 
+						message = '<div style="padding:15px; width:max-content;">여기가 내 위치입니다</div>';
+					
+					displayInfo(locPosition, message);
+						
+				}, error => {
+					var locPosition = new kakao.maps.LatLng(37.545167, 126.676048),    
+					message = '<div style="padding:15px; width:max-content;">여기가 내 위치입니다</div>';
+				
+					displayInfo(locPosition, message);					
+				});
+				
+			} else {
+				
+				var locPosition = new kakao.maps.LatLng(37.545167, 126.676048),    
+					message = '<div style="padding:15px; width:max-content;">여기가 내 위치입니다</div>';
+				
+				displayInfo(locPosition, message);
+			}
+
+
+		function displayInfo(locPosition, message) {
+
+			var iwContent = message, 
+				iwRemoveable = true;
+
+			var infowindow = new kakao.maps.InfoWindow({
+				position: locPosition,
+				content : iwContent,
+				removable : iwRemoveable
+			});
+
+			infowindow.open(map);
+
+			map.setCenter(locPosition);      
+		}    
+    </script>
+
+</body>
+</html>
