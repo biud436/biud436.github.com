@@ -1,1 +1,0 @@
-node tools/crawling.js 
