@@ -1,6 +1,0 @@
-const config = {
-    API_KEY: window.atob("WWIxblBHVEFoa2xjJTJCMUJ6JTJGN2VqZ2JDR2QyZ25DdDhoR3I4UmhrdWJGbUNGQ0ZEUUtMQUhkUGMlMkJMdmRPWnJSYzlJUzlEN2syMHZ2TG9jVW9EaVRhYlElM0QlM0Q="),
-    END_POINT_URL: window.atob(`aHR0cDovL2FwaXMuZGF0YS5nby5rci8xMzYwMDAwL1ZpbGFnZUZjc3RJbmZvU2VydmljZS9nZXRWaWxhZ2VGY3N0`),
-};
-
-export {config};
