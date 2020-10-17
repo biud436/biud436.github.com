@@ -1,3 +1,6 @@
 [submodule "weather"]
 	path = weather
 	url = https://github.com/biud436/weather.git
+[submodule "youtube"]
+	path = youtube
+	url = https://github.com/biud436/youtube-clone.git
