@@ -131,8 +131,8 @@ class App {
 
             });
 
-            texts.push(text);
-            container.addChild(text);
+            // texts.push(text);
+            // container.addChild(text);
         }
         
         // Update a frame.
