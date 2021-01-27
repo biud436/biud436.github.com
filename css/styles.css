@@ -10506,7 +10506,7 @@ section#about {
   color: rgba(0,0,0,0.7);
 }
 
-.card-description:not(.active)::after {
+.card-description:hover:not(.active)::after {
   content: "more";
   width: auto;
   height: 1em;
@@ -10515,7 +10515,7 @@ section#about {
   box-sizing: content-box;
   right: 0;
   bottom: 0;
-  font-size: 1em;
+  font-size: 12px;
   padding: 0.5em 0.5em;
   text-align: center;
   border-radius: 2px 2px 2px 2px;
