@@ -10507,21 +10507,25 @@ section#about {
 }
 
 .card-description:not(.active)::after {
-  content: "더보기";
-  width: 3em;
-  height: 2em;
-  line-height: 2em;
+  content: "more";
+  width: auto;
+  height: 1em;
+  line-height: 1em;
+  display: block;
+  box-sizing: content-box;
   right: 0;
   bottom: 0;
   font-size: 1em;
+  padding: 0.5em 0.5em;
+  text-align: center;
   border-radius: 2px 2px 2px 2px;
-  background-color: black;
+  background-color: #D4D4D4;
   opacity: 0.6;
   transform: translate(-50%);
   position: absolute;
-  border-bottom: 1px dotted #444444;
+  border: 1px solid #A4A4A4;
   z-index: 10;
-  color: white;
+  color: #1F1F1F;
 }
 
 .card-description.active {
