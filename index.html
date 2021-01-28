@@ -160,10 +160,10 @@
                                     <p class="card-text card-description">타입스크립트와 웹팩을 활용하여 만든 웹 기반 타일맵 에디터입니다.<br>
                                         타일맵 에디터는 모델 - 뷰 - 컨트롤러라는 MVC 패턴으로 구성되었습니다.<br>
                                         모든 기능은 하나의 컴포넌트 단위로 분리되었고 필요할 때마다 불러서 쓸 수 있습니다.<br>
-                                        각 컴포넌트는 관찰차 패턴이 구현되었으므로 필요할 때마다 분리된 상태에서 컴포넌트를 호출할 수 있습니다.<br>
+                                        각 컴포넌트는 개량된 옵저버 패턴이 구현되었으므로 필요할 때마다 분리된 상태에서 이벤트를 통해 컴포넌트를 호출할 수 있습니다.<br>
                                         모든 클래스는 타입스크립트를 통해 모듈화 되어있으며 웹팩으로 번들링됩니다.<br>
                                         메뉴는 C# Winform과 비슷하게 사전에 JSON 파일에 등록된 이벤트를 실행할 수 있게 되어있습니다. <br>
-                                        타일 채우기는 Flood Fill 알고리즘을 활용하여 빈 셀을 매우 빠르게 찾아 채웁니다.<br>
+                                        타일 채우기는 Flood Fill 알고리즘을 활용하여 빈 셀을 매우 빠르게 찾아 채울 수 있습니다.<br>
                                     </p>                                    
                                     <h5 class="card-text">포트폴리오 서버 : </h5><figure class="card-text">서버 성능이 좋지 않아 실행 시 다소 시간이 소요될 수 있습니다.</figure>
                                     <!-- <a class="btn btn-danger" href="https://biud436.xyz:9007">HTTPS 서버(AWS EC2)</a> -->
@@ -795,5 +795,13 @@
         <script src="js/scripts.js"></script>
         <script src="js/typeWriter.js"></script>
         <script type="module" src="/js/index.js"></script>
+        <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+        <script type="text/javascript">
+        if(!wcs_add) var wcs_add = {};
+        wcs_add["wa"] = "15960f98fc7584";
+        if(window.wcs) {
+        wcs_do();
+        }
+        </script>        
     </body>
 </html>
