@@ -8,7 +8,7 @@ export class SkillComponent {
             template: `
                 <div class="col-sm">
                     <div class="card" v-on:mouseover="hover($event)" v-on:mouseout="leave($event)">
-                        <img class="card-img-top" :src="src" alt="Card image cap">
+                        <img class="card-img-top" width="256" height="256" :src="src" alt="Card image cap">
                         <div class="card-body">
                         <p class="card-text text-center">{{ getFullText }}</p>
                         </div>
