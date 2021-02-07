@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/biud436/biud436.github.com#readme",
   "dependencies": {
-    "pixi": "^0.3.1"
+    "pixi": "^0.3.1",
+    "vue": "^2.6.12"
   }
 }

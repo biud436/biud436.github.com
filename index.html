@@ -5,10 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Portfolio</title>
+        <title>어진석 포트폴리오</title>
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        
         <!-- Font Awesome 아이콘 (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
+        
         <!-- 구글 폰트 -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
@@ -16,20 +18,30 @@
         <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <script src="https://unpkg.com/typewriter-effect@2.3.1/dist/core.js"></script>
+        
+        <!-- vue.js -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
         <!-- Core theme CSS (includes 부트스트랩4)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet">
+
         <!-- 부트스트랩 코어 JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        
         <!-- 써드 파티 플러그인 JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        
         <!-- 2D 그래픽 라이브러리 -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.7/pixi.min.js" integrity="sha512-k8E2ILMRTO1YBnA2dvTDfsZs7f07gazZDQYbsv2NCxnM9hYFwCKu+rWISm8/fFB1I/gi0tgnURcXJVR7GlE0BA==" crossorigin="anonymous"></script>
         <script src="assets/pixi-filters.js"></script>
+        
         <!-- Contact form JS-->
         <script src="assets/mail/jqBootstrapValidation.js"></script>
         <script src="assets/mail/contact_me.js"></script>   
         <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous"></script>   
+
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -57,11 +69,24 @@
                 <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#portfolio">포트폴리오 목록 확인</a>
             </div>
         </header>
-        <!-- Portfolio Grid-->
+        <section class="page-section bg-white" id="skill-list">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">My Skills</h2>
+                    <h3 class="section-subheading text-muted"></h3>
+                </div>                
+                <div class="row">
+                    <div class="row" id="skill-list">
+                        <skill-component imgsrc="https://dummyimage.com/256x256/000/fff" normal="HTML" status="익숙함"></skill-component>
+                        <skill-component imgsrc="https://dummyimage.com/256x256/000/fff" normal="CSS" status="익숙함"></skill-component>
+                    </div>
+                </div>
+            </div>
+        </section>
         <section class="page-section bg-light" id="portfolio">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Portfolio</h2>
+                    <h2 class="section-heading text-uppercase">포트폴리오</h2>
                     <h3 class="section-subheading text-muted"></h3>
                 </div>
                 <div class="row">
@@ -311,6 +336,7 @@
                 </div>
             </div>
         </section>
+        <!-- Portfolio Grid-->
         <!-- About-->
         <!-- <section class="page-section" id="about">
             <div class="container">
